@@ -6,8 +6,10 @@ const express_hbs = require('express-handlebars');
 const session = require('express-session');
 const bodyParser = require("body-parser");
 const errorHandler = require("errorhandler");
-
 const configRoutes = require("./routes");
+const securityFile = require("./routes/security.js");
+
+
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -34,16 +36,16 @@ app.use( function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers,crossdomain,withcredentials,Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Origin,TokenType");
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  if (req.session.user) {
+  if (req.session.auth) {
     next();
   } else {
-    let url = req.url;
-    // filter rules
-    if (url === '/' || url.search('login') != -1 || url.search('signUpPage') != -1 ) {
-      next();
-    } else {
-      res.status(401).render("./main_page/signUpPage", {  layout: 'main'});
-    }
+    securityFile(req,val => {
+      if(val.res == 0){
+        next();
+      }else{
+        res.redirect("./main_Page/homePage")
+      }
+    });
   }
 });
 

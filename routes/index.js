@@ -6,7 +6,7 @@ const constructorMethod = app => {
 
   app.use("/", async(req, res) => {
    console.log("inside")
-    res.render('./main_page/signUpPage', {
+    res.render('./main_page/homePage', {
      layout : "main",
      //title : "Top Artist Website"
     });
