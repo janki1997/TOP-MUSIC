@@ -1,0 +1,86 @@
+/* TOP MUSIC
+ * Users
+ * ~
+ */
+
+ /* DO NOT DELETE - WIP */
+
+ /* _dB */
+const mongoCollections = require('../config/mongoCollections');
+const bcrypt = require('bcrypt');
+const saltRounds = 16;
+
+/* collections */
+const artists = mongoCollections.artists;
+const metrics = mongoCollections.metrics;
+const threads = mongoCollections.threads;
+
+/* const users = mongoCollections.users; */
+
+async function getAllUsers() {
+	return users;
+}
+
+async function getUserByUsername(username) {
+	if (!username ||typeof username != 'string')
+		throw "username must be a non-empty string"
+
+	for (var i = 0; i < users.length; i++) {
+		if (users[i].username == username)
+			return users[i];
+	}
+
+	return undefined;
+}
+
+async function checkCredentials(username, password) {
+	if (!username || typeof username != 'string' || !password || typeof password != 'string')
+		throw "username and password must be non-empty strings"
+
+	try {
+		var user = await getUserByUsername(username);
+	} catch (e) {
+		return false;
+	}
+
+	if (user && await bcrypt.compare(password, user.hashedpassword))
+		return true;
+	else
+		return false;
+}
+
+async function getUserBySessionID(sID) {
+	for (var i = 0; i < users.length; i++)
+		for (var j = 0; j < users[i].sessionIDs.length; j++)
+			if (users[i].sessionIDs[j] == sID) {
+				return users[i];
+			}
+
+	return undefined;
+}
+
+async function addUserSessionID(username, sID) {
+	for (var i = 0; i < users.length; i++)
+		if (users[i].username == username)
+			return users[i].sessionIDs.push(sID);
+
+	return 0;
+}
+
+async function expireSessionID(sID) {
+	for (var i = 0; i < users.length; i++)
+		for (var j = 0; j < user.sessionIDs.length; j++)
+			if (users[i].sessionIDs[j] == sID)
+				return users[i].sessionIDs.splice(j, 1);
+
+	return 0;
+}
+
+module.exports = {
+	getAllUsers,
+	getUserByUsername,
+	checkCredentials,
+	getUserBySessionID,
+	addUserSessionID,
+	expireSessionID
+};
