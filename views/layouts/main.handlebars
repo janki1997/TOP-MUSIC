@@ -1,1 +1,38 @@
-{{{body}}}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Top Music</title>
+    <link rel="stylesheet" href=""> <!--css goes here-->
+</head>
+<body>
+    <header>
+        <h1>Top Music</h1>
+        <nav>
+        <ul>
+            <li><a href="">All Forums</a></li>
+        </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>User Login</h2>
+        <form id="login-form" method="POST" action="/login">
+            <label for="usename">Username</label>
+            <input id="username" type="text" name="username">
+            <br>
+            <label for="password">Password</label>
+            <input id="password" type="password" name="password">
+            <br>
+            <button type="submit">Sign In</button>
+        </form>
+        {{{body}}}
+        {{#if error}}
+        <p>Your username or password did not match. Please try again</p>
+        {{/if}}
+    </main>
+    <footer>
+        <p>Top Music - CS 546 B</p>
+    </footer>
+
+</body>
+</html>
