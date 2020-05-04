@@ -13,10 +13,12 @@ const _getIndex = (field, value) => {
         return x;
 };
 
+
 const getPassword = usn => {
   const x = _getIndex("username", usn);
   if (x) return users[x].hashedPassword;
 };
+
 
 const getUserFromSession = sessionId => {
   const x = _getIndex("_id", sessionId);

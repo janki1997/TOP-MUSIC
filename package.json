@@ -1,38 +1,24 @@
 {
-  "name": "top-music",
+  "name": "TOP_MUSIC",
   "version": "1.0.0",
-  "description": "CS 546 Final Project",
-  "private": true,
+  "description": "Music forum",
+  "main": "app.js",
+  "scripts": {
+    "seed": "node ./tasks/seed.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "Steven Gorfman, Ryan Qin, Brandon Patton, Janki",
+  "license": "MIT",
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
-    "crypto-js": "^4.0.0",
-    "errorhandler": "^1.5.1",
     "express": "^4.17.1",
-    "express-handlebars": "^4.0.4",
+    "express-handlebars": "^3.1.0",
     "express-session": "^1.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "moment": "^2.25.1",
+    "handlebars": "^4.7.6",
     "mongodb": "^3.5.7",
-    "morgan": "^1.10.0",
-    "node": "^14.0.0",
-    "nodemon": "^2.0.3",
-    "uuid": "^8.0.0"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "start": "nodemon ./bin/www",
-    "seed": "nodemon ./task/seed",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/janki1997/TOP-MUSIC.git"
-  },
-  "author": "BJRS",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/janki1997/TOP-MUSIC/issues"
-  },
-  "homepage": "https://github.com/janki1997/TOP-MUSIC#readme"
+    "uuid": "^7.0.3"
+  }
 }
