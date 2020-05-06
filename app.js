@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const exphbs = require("express-handlebars");
 const exps = require("express-session");
+const awesome = 'YEA!';
 
 const app = express();
 const port = 3000;
