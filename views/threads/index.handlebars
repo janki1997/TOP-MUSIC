@@ -1,0 +1,25 @@
+<section>
+  <h1>Threads</h1>
+  {{#each threads}}  
+    <article class="threads">
+      <h2><a href="/threads/{{_id}}">{{title}}</a></h2> <!--title and id fed in from routes with res.render-->
+      <p>{{body}}</p>
+    </article>
+  {{/each}}
+  <!--dropdown menu of below and a single button to perform action-->
+  <select id = "sortThreads" name = "sortThreads" onChange = "sortThreads()">
+    <option value="Likes">Sort Threads by Likes</option>
+    <option value="Artists">Sort Threads by Artists</option>         <!--take all threads, get their artist, group threads by that artist together, sorting them all alphabetically (maybe most recent after alphabetically?)-->
+    <option value="Genres">Sort Threads by Genres</option>           <!--same as above-->
+    <option value="mostComments">Sort Threads by Most Comments</option>
+    <option value="mostRecent">Sort Threads by Most Recent</option>
+  </select>
+  <!--<ul>
+      <li><button onclick="sortForumsLikes()">Sort Forums by Likes</button></li>
+      <li><button onclick="sortForumsArtists()">Sort Forums by Artists</button></li> 
+      <li><button onclick="sortForumsGenres()">Sort Forums by Genres</button></li> 
+      <li><button onclick="sortForumsMostComments()">Sort Forums by Most Comments</button></li>
+      <li><button onclick="sortForumsMost Recent()">Sort Forums by Most Recent</button></li>
+  </ul>-->
+  
+</section>
