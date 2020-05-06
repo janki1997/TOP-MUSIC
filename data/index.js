@@ -1,10 +1,18 @@
-var accessData = require("./access");
-var encryption = require("./encryption");
-var users = require("./users");
+/* TOP MUSIC
+ * Data
+ * ~
+ */
 
+const artistData = require("./artists");
+const genreData = require("./genres");
+const metricData = require("./metrics");
+const threadData = require("./threads");
+const userData = require("./users");
 
 module.exports = {
-    accessData,
-    encryption,
-    users,
+  artists: artistData,
+  genres: genreData,
+  metrics: metricData,
+  threads: threadData,
+  users: userData
 };

@@ -1,16 +1,18 @@
-let MongoClient = require("mongodb").MongoClient;
-let mongoURL = "mongodb://localhost:27017/";
-let dbName = "TOP_MUSIC";
-let connection = undefined;
-let db = undefined;
+const MongoClient = require('mongodb').MongoClient;
+
+const mongoConfig = {
+  serverUrl: 'mongodb://localhost:27017/',
+  database: 'TOP_MUSIC'
+};
+
+let _connection = undefined;
+let _db = undefined;
 
 module.exports = async () => {
-  if (!connection) {
-    connection = await MongoClient.connect(mongoURL);
-    db = await connection.db(dbName);
-
-    console.log("DataBAse connected successfully.");
+  if (!_connection) {
+    _connection = await MongoClient.connect(mongoConfig.serverUrl, {useNewUrlParser: true});
+    _db = await _connection.db(mongoConfig.database);
   }
-  return db;
 
+  return _db;
 };
