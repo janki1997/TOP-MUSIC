@@ -1,0 +1,15 @@
+<article class="thread">
+  <h1>{{ thread.title }}</h1>
+  <address>Posted by {{thread.poster.name}}</address>
+  <p>{{ thread.body }}</p>
+
+  {{#if thread.tags.length}}
+    <h3>Tags</h3>
+    <ul>
+      {{#each thread.tags}}
+        <li><a href="/posts/tag/{{this}}">{{this}}</a></li>
+      {{/each}}
+    </ul>
+  {{/if}}
+  <a href="/">Back to All Threads</a>
+</article>
