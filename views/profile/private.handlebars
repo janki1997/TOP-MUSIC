@@ -1,0 +1,13 @@
+<main> 
+    {{#if userInfo}}
+        id: {{userInfo._id}}<br>
+        username: {{userInfo.username}}<br>
+        firstName: {{userInfo.firstName}}<br>
+        lastName: {{userInfo.lastName}} <br>
+        profession: {{userInfo.profession}}<br>
+        bio: {{userInfo.bio}}<br>
+    {{/if}}
+    <nav>
+        <a href="/logout">Logout</a>
+    </nav>
+</main>   
