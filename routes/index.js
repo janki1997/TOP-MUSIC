@@ -1,5 +1,5 @@
 /* TOP MUSIC
- * Users
+ * Routes
  * ~
  */
 
@@ -9,7 +9,7 @@ const uuid = require("uuid/v4");
 
 module.exports = app => {
   app.get("/", cookies.pushCookie, (req, res) => {
-    res.render("layouts/home");
+    res.render("layouts/main");
   });
 
   app.post("/login", (req, res) => {
@@ -21,7 +21,7 @@ module.exports = app => {
       auth.setSession(usn, sessionId);
       cookies.setCookie(res, sessionId);
       res.redirect("/private");
-    } else res.render("layouts/home", { error: true });
+    } else res.render("layouts/main", { error: true });
   });
 
   app.get("/private", cookies.pullCookie, (req, res) => {
