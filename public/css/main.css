@@ -78,6 +78,37 @@ th {
   margin-top: 2em;
 }
 
+.registration {
+  display: flex;
+  flex-direction: column;
+  width: 35%;
+  margin: auto;
+}
+
+.m-t-b-5 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: bolder;
+}
+
+.btn-submit {
+  color: #ffffff;
+  background-color: #0cb8de;
+  border: none;
+  padding: 5px;
+  border: 1px solid #0999b9;
+  width: 100%;
+  cursor: pointer;
+} 
+
 .failure {
   color: #dc3545;
 }

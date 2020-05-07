@@ -3,7 +3,7 @@
  * ~
  */
 
-const bcrypt = require("bcrypt");
+const bcryptjs = require("bcryptjs");
 const users = require("./data/users");
 const saltRounds = 16;
 
@@ -26,7 +26,7 @@ const getUserFromSession = sessionId => {
 };
 
 const passwordsMatch = (requestPassword, userPassword) => {
-  const isMatch = bcrypt.compareSync(requestPassword, userPassword);
+  const isMatch = bcryptjs.compareSync(requestPassword, userPassword);
   return isMatch;
 };
 

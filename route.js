@@ -1,28 +1,15 @@
-/* TOP MUSIC
- * Routes
- * ~
- */
+// /* TOP MUSIC
+//  * Routes
+//  * ~
+//  */
 
-const auth = require("../auth");
-const accessRoutes = require("./access");
-const cookies = require("../cookies");
-const uuid = require("uuid/v4");
+// const auth = require("./auth");
+// const cookies = require("./cookies");
+// const uuid = require("uuid/v4");
 
-module.exports = app => {
-  app.use("/access", accessRoutes);
-
-  app.use("/", async(req, res) => {
-    res.render('profile/homePage', {
-     layout : "main",
-     title : "Top Artist Website"
-    });
-  });
-
-  app.use("*", (req, res) => {
-    res.status(404).json({ message: "Post not found" });
-  });
+// module.exports = app => {
 //   app.get("/", cookies.pushCookie, (req, res) => {
-//     res.render("layouts/main");
+//     res.render("layouts/home");
 //   });
 
 //   app.post("/login", (req, res) => {
@@ -34,7 +21,7 @@ module.exports = app => {
 //       auth.setSession(usn, sessionId);
 //       cookies.setCookie(res, sessionId);
 //       res.redirect("/private");
-//     } else res.render("layouts/main", { error: true });
+//     } else res.render("layouts/home", { error: true });
 //   });
 
 //   app.get("/private", cookies.pullCookie, (req, res) => {
@@ -45,4 +32,4 @@ module.exports = app => {
 //     cookies.expireCookie(res);
 //     res.render("layouts/link", { title: "Logged Out" });
 //   });
-};
+// };
