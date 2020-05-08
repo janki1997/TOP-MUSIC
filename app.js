@@ -7,15 +7,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const exphbs = require("express-handlebars");
-const session = require("express-session");
+const session = require('express-session');
 const securityFile = require("./routes/security.js");
-const awesome = 'YEA!';
-
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(express.static(__dirname + "public"));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(express.static(__dirname + '/public'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
