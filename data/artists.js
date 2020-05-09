@@ -5,35 +5,26 @@
 
 const mongoCollections = require('../config/mongoCollections');
 const ObjectId = require('mongodb').ObjectId
-const artists = mongoCollections.albums;
+const artists = mongoCollections.artists;
 const genres = mongoCollections.genres;
 
 let exportedMethods = {
-    async addArtist(artistName, artistMembers, yearFormed, genres, recordLabel)  {
-        const artistCollection = await artists();
-        // const userThatPosted = await users.getUserById(posterId);
-        let newArtist = {
-          artistName: artistName,
-          artistMembers: artistMembers,
-          yearFormed: yearFormed,
-          genres: genres,
-          recordLabel: recordLabel,
-          albums: []
-        };
-        const newInsertInformation = await artistCollection.insertOne(newArtist);
-        if (newInsertInformation.insertedCount === 0) throw 'Insert failed!';
-        return this.getArtistById(newInsertInformation.insertedId);
+    async  GetAllArtists() {
+        let artistsCollection = await artists();
+        let artistsList = await artistsCollection.find({}).toArray();
+        if (!artistsList.length) throw 'Artists is not in System';
+        return artistsList;
     },
-    async getArtist(id) {
-        if (id === undefined) throw 'You must provide an id';
-        const artistCollection = await artists();
-        const artist = await artistCollection.findOne({_id: ObjectId(id)});
-        if (!artist) throw 'Artist not found';
-        return band;
+    async  GetArtistsById(id) {
+        let artistsCollection = await artists();
+        let artistsList = await artistsCollection.findOne({ _id: id });
+        if (!artistsList) throw 'artists not found ';
+        return artistsList;
     },
-    async getAll() {
-        const artistCollection = await artsts();
-        return await artistCollection.find({}).toArray();
+    async  AddArtists(artistData) {
+        let artistsCollection = await artists();
+        let insertArtist = await artistsCollection.insertMany(artistData);
+        return true;
     },
     async removeArtist(id) {
         if (id === undefined) return Promise.reject('No id provided');

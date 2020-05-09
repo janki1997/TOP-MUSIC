@@ -5,28 +5,29 @@
 
 const mongoCollections = require('../config/mongoCollections');
 const ObjectId = require('mongodb').ObjectId
-const artists = mongoCollections.albums;
+const artists = mongoCollections.artists;
 const genres = mongoCollections.genres;
 
 let exportedMethods = {
-    async addGenre(genreName) {
-        const genreCollection = await genres();
-        let newGenre = { genreName: genreName };
-        const newInsertInformation = await genreCollection.insertOne(newGenre);
-        if (newInsertInformation.insertedCount === 0) throw 'Insert failed!';
-        return this.getGenre(newInsertInformation.insertedId);
-    },
-    async getGenre(id) {
-        if (id === undefined) throw 'You must provide an ID';
-        const genreCollection = await genres();
-        const genre = await genreCollection.findOne({_id: ObjectId(id)});
-        if (!genre) throw 'Genre not found';
-        return genre;
-      },
-    async getAll() {
-        const genreCollection = await genres();
-        return await genreCollection.find({}).toArray();
-    },
+  async  GetAllGenres() {
+    let genresCollection = await genres();
+    let genresList = await genresCollection.find({}).toArray();
+    if (!genresList.length) throw 'genre not found';
+    return genresList;
+  },
+
+  async  GetGenresById(id) {
+    let genersCollection = await genres();
+    let geners = await genersCollection.findOne({ _id: id });
+    if (!geners) throw 'geners not found';
+    return genres;
+  },
+
+  async  AddGenres(genreData) {
+    let genresCollection = await genres();
+    let insertGenres = await genresCollection.insertMany(genreData);
+    return true;
+  },
     async removeGenre(input) {
         if (id === undefined) return Promise.reject('No id provided');
         let currentGenre = await this.getGenre(id);
