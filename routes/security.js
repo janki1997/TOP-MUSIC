@@ -6,8 +6,6 @@ async function CheckAuthencation(req, callback) {
         name: 'registration'
     }, {
         name: 'login'
-    }, {
-        name: 'main'
     }];
 
     var return_data = access_service.filter(element => {

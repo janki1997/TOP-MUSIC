@@ -68,8 +68,30 @@ router.post("/login", async (req, res) => {
             let password = data.encryption.decrypt(userData.password);
             if (password == req.body.password) {
                 req.session.auth = jwt.sign({ userid: userData._id }, 'secret');
-                // req.session.user = userData
-                res.render("profile/homePage", { layout: "main" });
+                let getThreadData = await data.threads.GetAllThreads();
+                let thread_ids = getThreadData.map(x => x._id);
+                let getLikeData = await data.threads.getThreadLikeWise(thread_ids, userData._id);
+                getThreadData.forEach(element => {
+                    getLikeData.forEach(lelement => {
+                        if (element._id == lelement.threadId && element.userId == userData._id) {
+                            element["userlike"] = 1
+                        }
+                    })
+                })
+                if (getThreadData.length) {
+                    res.render("profile/homePage", {
+                        auth: req.session.auth,
+                        threadData: getThreadData,
+                        userID: userData._id
+                    });
+                } else {
+                    res.render("profile/homePage", {
+                        auth: req.session.auth,
+                        threadData: getThreadData,
+                        userID: userData._id,
+                        message: "Recently No Forum Post!"
+                    });
+                }
             } else {
                 res.status(404).render("profile/login", { layout: "main", error_message: "Incorrect Username/password." });
             }
