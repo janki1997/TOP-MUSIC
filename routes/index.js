@@ -22,7 +22,7 @@ module.exports = app => {
     res.render(page);
   });
 
-  app.use("/", async (req, res) => {
+  app.get("/", async (req, res) => {
     let getThreadData = await data.threads.GetAllThreads();
     app.locals.sess = req.session;
     let thread_ids = getThreadData.map(x => x._id);
@@ -34,7 +34,7 @@ module.exports = app => {
               element["subThread"].push(selement)
           }
       });
-  })
+    });
     if (getThreadData.length) {
       res.render('profile/homePage', {
         layout: "main",
@@ -55,5 +55,30 @@ module.exports = app => {
     }
   });
 
+  app.post("/", async (req, res) => {
+    let input = req.body.dropdown;
+    let sorted = await data.threads.sortThreads(input);
+    app.locals.sess = req.session;
+    let thread_ids = sorted.map(x => x._id);
+    let getsubThreadData = await data.threads.GetSubThread(thread_ids);
+    sorted.forEach(element => {
+      element["subThread"] = [];
+      getsubThreadData.forEach(selement => {
+          if (element._id == selement.threadId) {
+              element["subThread"].push(selement)
+          }
+      });
+    });
+    res.render('profile/homePage', {
+      layout: "main",
+      title: "Top Music",
+      threadData: sorted,
+      auth: (req.session.auth) ? req.session.auth : ""
+    });
+  });
+
+  app.use('*', (req, res) => {
+		res.sendStatus(404);
+	});
 
 };
