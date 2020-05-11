@@ -5,8 +5,10 @@
 
 const mongoCollections = require('../config/mongoCollections');
 const threads = mongoCollections.threads;
+const subThreads = mongoCollections.subThreads;
 const threadLikes = mongoCollections.threadLikes;
 const users = mongoCollections.users;
+const moment = require('moment');
 
 let exportedMethods = {
     async GetAllThreads() {
@@ -15,7 +17,7 @@ let exportedMethods = {
             let threadList = await threadsCollection.find({ }).sort({ createdDate: -1 }).toArray();
             let user_ids =  threadList.map(x=> x.userId);
             let usersCollection = await users();
-            let userData = await usersCollection.find({ _id : {$in :user_ids } }).project({}).toArray();
+            let userData = await usersCollection.find({ _id : {$in :user_ids } }).toArray();
             threadList.forEach(element=>{
                 userData.forEach(uelement => {
                     if(element.userId == uelement._id){
@@ -133,10 +135,51 @@ let exportedMethods = {
     async DeleteThread( thread_id) {
         try {
             let threadsCollection = await threads();
-            let updateLikeCount = await threadsCollection.deleteOne({ _id : thread_id });
+            let deleteThread = await threadsCollection.deleteOne({ _id : thread_id });
             return true;
         }
         catch (e) {
+            throw new Error(e.message)
+        }
+    },
+    async CreateSubThread(threadData){
+        try {
+            let subThreadsCollection = await subThreads();
+            await subThreadsCollection.insertOne(threadData);
+            return true;
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
+    },
+    async DeleteSubThread(sub_thread_id){
+        try {
+            let subThreadsCollection = await subThreads();
+            let deleteSubThread = await subThreadsCollection.deleteOne({ _id : sub_thread_id });
+            return true;
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
+    },
+    async GetSubThread(thread_ids){
+        try{
+            let subThreadsCollection = await subThreads();
+            let subThreadList = await subThreadsCollection.find({ threadId : {$in :thread_ids }}).sort({ createdDate: -1 }).toArray();
+            let user_ids =  subThreadList.map(x=> x.userId);
+            let usersCollection = await users();
+            let userData = await usersCollection.find({ _id : {$in :user_ids } }).toArray();
+            subThreadList.forEach(element=>{
+                element["createdDate"] = moment(element.createdDate).format("DD/MM/YYYY");
+                userData.forEach(uelement => {
+                    if(element.userId == uelement._id){
+                        element["fullName"] = uelement.fullName,
+                        element["profileLogo"] = uelement.profileLogo
+                    }
+                });
+            });
+            return  subThreadList
+        } catch (e) {
             throw new Error(e.message)
         }
     }
