@@ -15,33 +15,42 @@ module.exports = app => {
   app.use("/access", accessRoutes);
   app.use("/thread", threads);
 
-  
+
   app.get("/*.handlebars", async (req, res) => {
     let url = req.originalUrl;
-    let page = url.substring(1, url.length-11);
+    let page = url.substring(1, url.length - 11);
     res.render(page);
   });
-  
-  app.use("/", async(req, res) => {
+
+  app.use("/", async (req, res) => {
     let getThreadData = await data.threads.GetAllThreads();
     app.locals.sess = req.session;
-
-    if(getThreadData.length){
+    let thread_ids = getThreadData.map(x => x._id);
+    let getsubThreadData = await data.threads.GetSubThread(thread_ids);
+    getThreadData.forEach(element => {
+      element["subThread"] = [];
+      getsubThreadData.forEach(selement => {
+          if (element._id == selement.threadId) {
+              element["subThread"].push(selement)
+          }
+      });
+  })
+    if (getThreadData.length) {
       res.render('profile/homePage', {
-       layout : "main",
-       title : "Top Music", 
-       threadData : getThreadData,
-       auth: (req.session.auth) ? req.session.auth : ""
+        layout: "main",
+        title: "Top Music",
+        threadData: getThreadData,
+        auth: (req.session.auth) ? req.session.auth : ""
       });
 
-    }else{
+    } else {
 
       res.render('profile/homePage', {
-       layout : "main",
-       title : "Top Music", 
-       threadData : getThreadData,
-       auth: (req.session.auth) ? req.session.auth : "",
-       message : "Recently One Post any Forum. Please Login to post our forum first!"
+        layout: "main",
+        title: "Top Music",
+        threadData: getThreadData,
+        auth: (req.session.auth) ? req.session.auth : "",
+        message: "Recently One Post any Forum. Please Login to post our forum first!"
       });
     }
   });

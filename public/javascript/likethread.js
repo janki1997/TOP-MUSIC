@@ -26,9 +26,12 @@ function addRemovelike(thread_id,user_id){
 
 
 function editThread(comment, title, thread_id){
-    console.log(comment, title, thread_id)
     $('#editTitle').val(title)
     $('#editComment').val(comment)
     $('#hiddenThreadId').val(thread_id)
     $('#myModal').modal('show')
+}
+
+function commentToggle(id){
+    $('#comment-'+id).toggle()
 }

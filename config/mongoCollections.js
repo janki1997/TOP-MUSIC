@@ -16,4 +16,5 @@ module.exports = {
   threads: getCollectionFn("threads"),
   users: getCollectionFn("users"),
   threadLikes: getCollectionFn("threadLikes"),
+  subThreads: getCollectionFn("subThreads"),
 };

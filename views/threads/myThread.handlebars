@@ -31,8 +31,6 @@
                         <i class="fas fa-pencil-alt mr-1"
                             onclick="editThread('{{this.comment}}', '{{this.title}}', '{{this._id}}')"></i>
                         <a href="/thread/DeleteThread/{{this._id}}/{{../userID}}"> <i class="fas fa-trash mr-1"></i></a>
-                        <!-- <i class="fas fa-comment-alt mr-1"></i>
-                            <i class="fas fa-comment-alt mr-1"></i> -->
                     </div>
                 </div>
 
@@ -48,7 +46,7 @@
                 </div>
 
                 <div class="card-footer p-2">
-                    <button type="button" class="btn btn-sm btn-light">
+                    <button type="button" class="btn btn-sm btn-light"  onclick="commentToggle('{{this._id}}')">
                         <i class="fas fa-comment-alt mr-1"></i>Comment
                     </button>
                     <button type="button" class="btn btn-sm btn-light"
@@ -64,10 +62,41 @@
                         like(<span id="count-{{this._id}}">{{this.likeCount}}</span>)
                     </button>
                 </div>
+                <div class="comments-list" style="display: none;" id="comment-{{this._id}}">
+                    <div class="p-2">
+                        <form method="POSt" action="/thread/AddSubThread/0">
+                            <input name="user_id" value="{{../userID}}" type="hidden">
+                            <input name="thread_id" value="{{this._id}}" type="hidden">
+                            <div class="form-group">
+                                <label for="comment">Your Comment</label>
+                                <textarea name="comment" class="form-control" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-light">Send</button>
+                        </form>
+                    </div>
+                    <div>
+                        {{#each this.subThread}}
+                        <div class="d-flex p-2">
+                            <div class="d-flex flex-grow-1">
+                                <img src="https://via.placeholder.com/20" class="rounded-circle mr-2 d-block w-20"
+                                    alt="img">
+                                {{this.fullName}}
+                            </div>
+                            <div>
+                                <small>{{this.createdDate}}</small>
+                                <a href= "/thread/DeleteSubThread/{{this._id}}/{{../../userID}}" ><i class="fas fa-trash mr-1"></i> </a>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                          {{this.comment}}
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
             </div>
             {{/each}}
         </div>
-        
+
         <div class="col-3">
             <div class="card">
                 <h5 class="card-title bg-light text-center">Trending this week</h5>
