@@ -3,121 +3,141 @@
  * ~
  */
 
-/* _dB */
 const mongoCollections = require('../config/mongoCollections');
-const uuid = require('uuid/v4');
-
-/* collections */
-const artists = mongoCollections.artists;
-const metrics = mongoCollections.metrics;
 const threads = mongoCollections.threads;
+const threadLikes = mongoCollections.threadLikes;
 const users = mongoCollections.users;
 
-const exportedMethods = {
-    async addThread(title, body, tags, posterId) {
-        if (typeof title !== 'string') throw 'No title provided';
-        if (typeof body !== 'string') throw 'I aint got nobody!';
-    
-        if (!Array.isArray(tags)) {
-          tags = [];
+let exportedMethods = {
+    async GetAllThreads() {
+        try {
+            let threadsCollection = await threads();
+            let threadList = await threadsCollection.find({ }).sort({ createdDate: -1 }).toArray();
+            let user_ids =  threadList.map(x=> x.userId);
+            let usersCollection = await users();
+            let userData = await usersCollection.find({ _id : {$in :user_ids } }).project({}).toArray();
+            threadList.forEach(element=>{
+                userData.forEach(uelement => {
+                    if(element.userId == uelement._id){
+                        element["fullName"] = uelement.fullName,
+                        element["profileLogo"] = uelement.profileLogo
+                    }
+                })
+            })
+            return threadList;
         }
-    
-        const threadCollection = await threads();
-    
-        const userThatPosted = await users.getUserById(posterId);
-    
-        const newThread = {
-          title: title,
-          body: body,
-          poster: {
-            id: posterId,
-            name: `${userThatPosted.firstName} ${userThatPosted.lastName}`
-          },
-          tags: tags,
-          _id: uuid()
-        };
-    
-        const newInsertInformation = await threadCollection.insertOne(newThread);
-        const newId = newInsertInformation.insertedId;
-    
-        await users.addThreadToUser(posterId, newId, title);
-    
-        return await this.getThreadById(newId);
+        catch (e) {
+            throw new Error(e.message)
+        }
     },
-  async getAll() {
-    const threadCollection = await threads();
-    return await threadCollection.find({}).toArray();
-  },
-  async getThreadsByTag(tag) {
-    if (!tag) throw 'No tag provided';
 
-    const threadCollection = await threads();
-    return await threadCollection.find({tags: tag}).toArray();
-  },
-  async getThreadById(id) {
-    const threadCollection = await threads();
-    const thread = await threadCollection.findOne({_id: id});
+    async AddThread(threadData) {
+        try {
+            let threadsCollection = await threads();
+            await threadsCollection.insertOne(threadData);
+            return true;
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
+    },
 
-    if (!thread) throw 'Thread not found';
-    return thread;
-  },
-  async removeThread(id) {
-    const threadCollection = await threads();
-    let thread = null;
-    try {
-      thread = await this.getThreadById(id);
-    } catch (error) {
-      console.log(error);
-      return;
+    async GetThread(id) {
+        try {
+            let threadsCollection = await threads();
+            let threadList = await threadsCollection.findOne(
+                { _id: id },
+                { _id: 1, title: 1, comment: 1, media: 1, likeCount: 1, parentComment: 1 }
+            );
+            return threadList;
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
+    },
+
+    async GetAllUserThreads(user_id) {
+        try {
+            let threadsCollection = await threads();
+            let threadList = await threadsCollection.find({ $query: { userId: user_id } }).sort({ createdDate: -1 }).toArray();
+            return threadList;
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
+    },
+
+    async getThreadByLike(thread_id, user_id) {
+        try {
+            let likeCollection = await threadLikes();
+            let likeData = await likeCollection.findOne({ userId: user_id, threadId: thread_id });
+            return likeData;
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
+    },
+
+    async addThreadLike(likeData) {
+        try {
+            let likeCollection = await threadLikes();
+            let addLike = await likeCollection.insertOne(likeData);
+            let getThread = await GetThread(likeData.thread_id);
+            let threadsCollection = await threads();
+            let updateLikeCount = threadsCollection.updateOne({ _id: likeData.thread_id }, { $set: { likeCount: getThread.likeCount + 1 } })
+            return addLike;
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
+    },
+
+    async removeThreadLike(thread_id, user_id) {
+        try {
+            let likeCollection = await threadLikes();
+            let removeLike = await likeCollection.removeOne({ threadId: thread_id, userId: user_id });
+            let getThread = await GetThread(likeData.thread_id);
+            let threadsCollection = await threads();
+            if (getThread.likeCount != 0) {
+                let updateLikeCount = threadsCollection.updateOne({ _id: likeData.thread_id }, { $set: { likeCount: getThread.likeCount - 1 } })
+            }
+            return true;
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
+    },
+    async getThreadLikeWise(thread_id, user_id) {
+        try {
+            let likeCollection = await threadLikes();
+            let likeData = await likeCollection.find({ $query: { userId: user_id, $in: { threadId: thread_id } } }).toArray();
+            return likeData;
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
+    },
+
+    async UpdateThread(threadData, thread_id) {
+        try {
+            let threadsCollection = await threads();
+            let updateLikeCount = threadsCollection.updateOne({ thread_id }, { $set: threadData });
+            return true;
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
+    },
+    async DeleteThread( thread_id) {
+        try {
+            let threadsCollection = await threads();
+            let updateLikeCount = await threadsCollection.deleteOne({ _id : thread_id });
+            return true;
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
     }
-    const deletionInfo = await threadCollection.removeOne({_id: id});
-    if (deletionInfo.deletedCount === 0) {
-      throw `Could not delete thread with id of ${id}`;
-    }
-    await users.removeThreadFromUser(thread.poster.id, id);
-    return true;
-  },
-  async updateThread(id, updatedThread) {
-    const threadCollection = await threads();
-
-    const updatedThreadData = {};
-
-    if (updatedThread.tags) {
-      updatedThreadData.tags = updatedThread.tags;
-    }
-
-    if (updatedThread.title) {
-      updatedThreadData.title = updatedThread.title;
-    }
-
-    if (updatedThread.body) {
-      updatedThreadData.body = updatedThread.body;
-    }
-
-    await threadCollection.updateOne({_id: id}, {$set: updatedThreadData});
-
-    return await this.getThreadById(id);
-  },
-  async renameTag(oldTag, newTag) {
-    if (oldTag === newTag) throw 'tags are the same';
-    let findDocuments = {
-      tags: oldTag
-    };
-
-    let firstUpdate = {
-      $addToSet: {tags: newTag}
-    };
-
-    let secondUpdate = {
-      $pull: {tags: oldTag}
-    };
-
-    const threadCollection = await threads();
-    await threadCollection.updateMany(findDocuments, firstUpdate);
-    await threadCollection.updateMany(findDocuments, secondUpdate);
-
-    return await this.getThreadsByTag(newTag);
-  }
-};
+}
 
 module.exports = exportedMethods;

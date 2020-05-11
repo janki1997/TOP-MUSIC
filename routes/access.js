@@ -68,8 +68,11 @@ router.post("/login", async (req, res) => {
             let password = data.encryption.decrypt(userData.password);
             if (password == req.body.password) {
                 req.session.auth = jwt.sign({ userid: userData._id }, 'secret');
-                // req.session.user = userData
-                res.render("profile/homePage", { layout: "main" });
+                let getThreadData = await data.threads.GetAllThreads();
+                res.render("profile/homePage", {
+                    auth: req.session.auth,
+                    threadData: getThreadData
+                });
             } else {
                 res.status(404).render("profile/login", { layout: "main", error_message: "Incorrect Username/password." });
             }

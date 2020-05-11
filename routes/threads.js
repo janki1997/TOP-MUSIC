@@ -2,109 +2,109 @@
  * Threads
  * ~
  */
-
- /* _dB */
 const express = require('express');
 const router = express.Router();
-
-/* data */
 const data = require('../data');
-const threadData = data.threads;
-const userData = data.users;
+const uuid = require('uuid');
+const moment = require('moment');
+const jwt = require('jsonwebtoken');
 
-router.get('/new', async (req, res) => {
-  const users = await userData.getAllUsers();
-  res.render('posts/new', {users: users});
+router.post("/createNewThread", async (req, res) => {
+    try {
+        if (!req.body.title) {
+            res.render("threads/myThread", { layout: "main", error_message: "Please provide forum title." })
+        } else if (!req.body.user_id) {
+            res.render("threads/myThread", { layout: "main", error_message: "Please provide user information." })
+        } else {
+            let threadData = {
+                _id: uuid.v4(),
+                title: req.body.title,
+                comment: (req.body.comment) ? req.body.comment : "",
+                media: (req.body.media) ? req.body.media : "",
+                createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+                lastUpdatedDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+                userId: req.body.user_id,
+                likeCount: 0,
+                parentComment: 0
+            }
+            let insertThread = await data.threads.AddThread(threadData);
+            let getThreadData = await data.threads.GetAllUserThreads(req.body.user_id);
+            res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth : req.session.auth, userID : req.body.user_id })
+        }
+    } catch (e) {
+        res.render("threads/myThread", { layout: "main", error_message: "Something went wrong. Please try again!" })
+    }
 });
 
-router.get('/:id', async (req, res) => {
-  try {
-    const post = await postData.getPostById(req.params.id);
-    res.render('posts/single', {post: post});
-  } catch (e) {
-    res.status(500).json({error: e});
-  }
+router.post("/likeDislikeThread/:thread_id/:user_id", async (req, res) => {
+    try {
+        if (!req.body.user_id) {
+            res.render("threads/myThread", { layout: "main", error_message: "Please provide user information." })
+        } else {
+            let threadData = await getThreadByLike(req.params.thread_id, req.params.user_id);
+            if (threadData == null) {
+                let ThreadData = {
+                    threadId: req.params.thread_id,
+                    userId: req.params.user_id,
+                    _id: uuid.v4()
+                }
+                let addLike = await addThreadLike(ThreadData);
+                res.json({ likeCount: 1 })
+            } else {
+                let removeLike = await removeThreadLike(req.params.thread_id, req.params.user_id)
+                res.render("threads/myThread", { layout: "main", like: 0 });
+            }
+        }
+    } catch (e) {
+        res.render("threads/myThread", { layout: "main", error_message: "Something went wrong. Please try again!" })
+    }
 });
 
-router.get('/tag/:tag', async (req, res) => {
-  const postList = await postData.getPostsByTag(req.params.tag);
-  res.render('posts/index', {posts: postList});
+router.post("/UpdateThread/:thread_id", async (req, res) => {
+    try {
+        if (!req.body.title) {
+            res.render("threads/myThread", { layout: "main", error_message: "Please provide forum title." })
+        } else if (!req.body.user_id) {
+            res.render("threads/myThread", { layout: "main", error_message: "Please provide user information." })
+        } else {
+            let threadData = {
+                title: req.body.title,
+                comment: (req.body.comment) ? req.body.comment : "",
+                media: (req.body.media) ? req.body.media : "",
+                lastUpdatedDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+            }
+            let updateThread = await data.threads.UpdateThread(threadData, thread_id);
+            let getThreadData = await data.threads.GetAllUserThreads(req.body.user_id);
+            res.render("threads/myThread", { layout: "main", threadData: getThreadData })
+        }
+    } catch (e) {
+        res.render("threads/myThread", { layout: "main", error_message: "Something went wrong. Please try again!" })
+    }
 });
 
-router.get('/', async (req, res) => {
-  const postList = await postData.getAllPosts();
-  res.render('posts/index', {posts: postList});
+router.get("/DeleteThread/:thread_id/:user_id", async (req, res) => {
+    try {
+        let deleteThread = await data.threads.DeleteThread(req.params.thread_id);
+        let getThreadData = await data.threads.GetAllUserThreads(req.params.user_id);
+        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth : req.session.auth, userID : req.params.user_id })
+
+    } catch (e) {
+        res.render("threads/myThread", { layout: "main", error_message: "Something went wrong. Please try again!" })
+    }
 });
 
-router.post('/', async (req, res) => {
-  let blogPostData = req.body;
-  let errors = [];
-
-  if (!blogPostData.title) {
-    errors.push('No title provided');
-  }
-
-  if (!blogPostData.body) {
-    errors.push('No body provided');
-  }
-
-  if (!blogPostData.posterId) {
-    errors.push('No poster selected');
-  }
-
-  if (errors.length > 0) {
-    res.render('posts/new', {
-      errors: errors,
-      hasErrors: true,
-      post: blogPostData
-    });
-    return;
-  }
-
-  try {
-    const newPost = await postData.addPost(
-      blogPostData.title,
-      blogPostData.body,
-      blogPostData.tags || [],
-      blogPostData.posterId
-    );
-
-    res.redirect(`/posts/${newPost._id}`);
-  } catch (e) {
-    res.status(500).json({error: e});
-  }
+router.get("/UserThread", async (req, res) => {
+    try {
+        let user_id = await jwt.verify(req.session.auth, 'secret').userid;
+        let getThreadData = await data.threads.GetAllUserThreads(user_id);
+        let user_data = await data.users.GetUserById(user_id);
+        getThreadData.forEach(element=>{
+            element["fullName"] = user_data.fullName;
+            element["profileLogo"] = user_data.profileLogo;
+        })
+        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth : req.session.auth, userID : user_id });
+    } catch (e) {
+       res.status(401).json({"msg" : e.message})
+    }
 });
-
-router.put('/:id', async (req, res) => {
-  let updatedData = req.body;
-  try {
-    await postData.getPostById(req.params.id);
-  } catch (e) {
-    res.status(404).json({error: 'Post not found'});
-    return;
-  }
-  try {
-    const updatedPost = await postData.updatePost(req.params.id, updatedData);
-    res.json(updatedPost);
-  } catch (e) {
-    res.status(500).json({error: e});
-  }
-});
-
-router.delete('/:id', async (req, res) => {
-  try {
-    await postData.getPostById(req.params.id);
-  } catch (e) {
-    res.status(404).json({error: 'Post not found'});
-    return;
-  }
-
-  try {
-    await postData.removePost(req.params.id);
-    res.sendStatus(200);
-  } catch (e) {
-    res.status(500).json({error: e});
-  }
-});
-
 module.exports = router;

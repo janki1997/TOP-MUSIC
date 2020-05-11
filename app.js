@@ -16,7 +16,13 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(express.static(__dirname + '/public'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+
+app.engine("handlebars", exphbs({ 
+  defaultLayout: "main",
+  extname: '.handlebars',
+  helpers: require("./public/javascript/helper.js").helpers,extname: 'handlebars'
+}));
+
 app.set("view engine", "handlebars");
 
 app.use(session({
@@ -28,7 +34,7 @@ app.use(session({
 
 require("./routes")(app);
 
-app.use(function (req, res, next) {
+app.all('/*', function (req, res, next) {
 
   if (req.session.auth) {
     next();
@@ -37,7 +43,7 @@ app.use(function (req, res, next) {
       if (val.res == 0) {
         next();
       } else {
-        res.render("/layouts/home")
+        res.render("/profile/homePage")
       }
     });
   }

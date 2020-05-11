@@ -8,7 +8,7 @@ const genreData = require("./genres");
 const metricData = require("./metrics");
 const threadData = require("./threads");
 const userData = require("./users");
-var encryption = require("./encryption");
+const encryption = require("./encryption");
 
 module.exports = {
   artists: artistData,
