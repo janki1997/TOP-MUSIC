@@ -182,6 +182,37 @@ let exportedMethods = {
         } catch (e) {
             throw new Error(e.message)
         }
+    },
+    async sortThreads(input) {
+        try {
+            const threadCollection = await threads();
+            let sort;
+            if (input == 'artist') {
+                sort = await threadCollection.find({}).sort({ artists: -1, createdDate: -1 }).toArray();
+            } else if (input == 'comments') {
+                sort = await threadCollection.find({}).sort({ parentComment: -1, createdDate: -1 }).toArray();
+            } else if (input == 'date') {
+                sort = await threadCollection.find({}).sort({ createdDate: 1 }).toArray();
+            } else if (input == 'genre') {
+                sort = await threadCollection.find({}).sort({ genre: -1, createdDate: -1 }).toArray();
+            } else {
+                sort = await threadCollection.find({}).sort({ likeCount: -1, createdDate: -1 }).toArray();
+            }
+            let user_ids = sort.map(x=> x.userId);
+            const usersCollection = await users();
+            let userData = await usersCollection.find({ _id : {$in :user_ids } }).toArray();
+            sort.forEach(element=>{
+                userData.forEach(uelement => {
+                    if(element.userId == uelement._id){
+                        element["fullName"] = uelement.fullName,
+                        element["profileLogo"] = uelement.profileLogo
+                    }
+                })
+            });
+            return sort;
+        } catch (e) {
+            throw new Error(e.message);
+        }
     }
 }
 

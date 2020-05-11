@@ -18,7 +18,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
-        <a class="navbar-brand" href="#">Top Music</a>
+        <a class="navbar-brand" href="/">Top Music</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -58,6 +58,17 @@
 
         </div>
     </nav>
+    <form id="sort" method="POST" action="/" name="sort">
+        <label for="dropdown">Sort By:</label>
+        <select id="dropdown" name="dropdown">
+            <option value="artist">Artist</option>
+            <option value="comments">Number of Comments</option>
+            <option value="date">Oldest</option>
+            <option value="genre">Genre</option>
+            <option value="likes">Number of Likes</option>
+        </select>
+        <button type="submit">Sort</button>
+    </form>
     {{{body}}}
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
