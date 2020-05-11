@@ -45,10 +45,9 @@ let exportedMethods = {
     async GetThread(id) {
         try {
             let threadsCollection = await threads();
-            let threadList = await threadsCollection.findOne(
-                { _id: id },
-                { _id: 1, title: 1, comment: 1, media: 1, likeCount: 1, parentComment: 1 }
-            );
+            let threadList = await threadsCollection.find(
+                { $query : {_id: id} }
+            ).project(  { _id: 1, title: 1, comment: 1, media: 1, likeCount: 1, parentComment: 1 }).toArray();
             return threadList;
         }
         catch (e) {
@@ -82,10 +81,11 @@ let exportedMethods = {
         try {
             let likeCollection = await threadLikes();
             let addLike = await likeCollection.insertOne(likeData);
-            let getThread = await GetThread(likeData.thread_id);
+            let getThread = await this.GetThread(likeData.threadId);
             let threadsCollection = await threads();
-            let updateLikeCount = threadsCollection.updateOne({ _id: likeData.thread_id }, { $set: { likeCount: getThread.likeCount + 1 } })
-            return addLike;
+            let count = ( getThread.length && getThread[0].likeCount) ? getThread[0].likeCount + 1 : 1;
+            let updateLikeCount = threadsCollection.updateOne({ _id: likeData.threadId }, { $set: { likeCount: count } })
+            return count;
         }
         catch (e) {
             throw new Error(e.message)
@@ -95,13 +95,15 @@ let exportedMethods = {
     async removeThreadLike(thread_id, user_id) {
         try {
             let likeCollection = await threadLikes();
-            let removeLike = await likeCollection.removeOne({ threadId: thread_id, userId: user_id });
-            let getThread = await GetThread(likeData.thread_id);
+            let removeLike = await likeCollection.deleteOne({ threadId: thread_id, userId: user_id });
+            let getThread = await this.GetThread(thread_id);
             let threadsCollection = await threads();
+            let count = 0;
             if (getThread.likeCount != 0) {
-                let updateLikeCount = threadsCollection.updateOne({ _id: likeData.thread_id }, { $set: { likeCount: getThread.likeCount - 1 } })
+                 count = ( getThread.length && getThread[0].likeCount) ? getThread[0].likeCount - 1  : 1;
+                let updateLikeCount = threadsCollection.updateOne({ _id: thread_id }, { $set: { likeCount: count } })
             }
-            return true;
+            return count;
         }
         catch (e) {
             throw new Error(e.message)
@@ -110,7 +112,7 @@ let exportedMethods = {
     async getThreadLikeWise(thread_id, user_id) {
         try {
             let likeCollection = await threadLikes();
-            let likeData = await likeCollection.find({ $query: { userId: user_id, $in: { threadId: thread_id } } }).toArray();
+            let likeData = await likeCollection.find({ $query: { userId: user_id, threadId: { $in: thread_id } } }).toArray();
             return likeData;
         }
         catch (e) {
@@ -121,7 +123,7 @@ let exportedMethods = {
     async UpdateThread(threadData, thread_id) {
         try {
             let threadsCollection = await threads();
-            let updateLikeCount = threadsCollection.updateOne({ thread_id }, { $set: threadData });
+            let updateLikeCount = await threadsCollection.updateOne({ _id : thread_id }, { $set: threadData });
             return true;
         }
         catch (e) {

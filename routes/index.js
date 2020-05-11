@@ -23,21 +23,27 @@ module.exports = app => {
   });
   
   app.use("/", async(req, res) => {
-    var likeThreadData = {}, thread_ids = [];
     let getThreadData = await data.threads.GetAllThreads();
-    // thread_ids = getThreadData.map(x=> x.threadID)
-    // if(req.session.auth){
-    //   user_id = await jwt.verify(req.session.auth, 'secret');
-    //   likeThreadData = await data.threads.getThreadLikeWise(thread_ids, user_id)
-    // }
     app.locals.sess = req.session;
-    let user_id = ""
-    res.render('profile/homePage', {
-     layout : "main",
-     title : "Top Music", 
-     threadData : getThreadData,
-     auth: (req.session.auth) ? req.session.auth : ""
-    });
+
+    if(getThreadData.length){
+      res.render('profile/homePage', {
+       layout : "main",
+       title : "Top Music", 
+       threadData : getThreadData,
+       auth: (req.session.auth) ? req.session.auth : ""
+      });
+
+    }else{
+
+      res.render('profile/homePage', {
+       layout : "main",
+       title : "Top Music", 
+       threadData : getThreadData,
+       auth: (req.session.auth) ? req.session.auth : "",
+       message : "Recently One Post any Forum. Please Login to post our forum first!"
+      });
+    }
   });
 
 

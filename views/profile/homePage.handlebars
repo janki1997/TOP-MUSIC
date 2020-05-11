@@ -7,7 +7,7 @@
                     <div class="d-flex flex-grow-1">
                         <img src="https://via.placeholder.com/20" class="rounded-circle mr-2 d-block w-20" alt="img">
                         {{this.fullName}}
-                           
+
                     </div>
 
                 </div>
@@ -15,10 +15,10 @@
                     <h5 class="card-title">{{this.title}}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">
                         {{this.comment}}</h6>
-                    <div class="d-flex justify-content-center">
+                    {{!-- <div class="d-flex justify-content-center">
                         <img src="https://via.placeholder.com/150" class="rounded mr-2 ml-2 d-block" alt="img">
                         <img src="https://via.placeholder.com/150" class="rounded mr-2 ml-2 d-block" alt="img">
-                    </div>
+                    </div> --}}
 
                 </div>
 
@@ -26,22 +26,27 @@
                     <button type="button" class="btn btn-sm btn-light">
                         <i class="fas fa-comment-alt mr-1"></i>Comment
                     </button>
-                 
-                    {{#if ../auth}} 
-                    <button type="button" class="btn btn-sm btn-light">
-                        <!-- use below if not like -->
-                        
-                        <i class="far fa-thumbs-up"></i>
-                      
-                        <!-- use below if liked -->
-                        {{!-- <i class="fas fa-thumbs-up"></i> --}}
-                      
-                        like
+
+                    {{#if ../auth}}
+                    <button type="button" class="btn btn-sm btn-light"
+                        onclick="addRemovelike('{{this._id}}', '{{../userID}}')">
+                        {{#if this.userlike}}
+                        <i id={{this._id}} class="fas fa-thumbs-up"></i>
+                        {{else}}
+                        <i id={{this._id}} class="far fa-thumbs-up"></i>
+                        {{/if}}
+
+                        like(<span id="count-{{this._id}}">{{this.likeCount}}</span>)
                     </button>
                     {{/if}}
                 </div>
             </div>
             {{/each}}
+        </div>
+         <div class="col-9">
+        {{#if message}}
+        <h3>{{message}}</h3>
+        {{/if}}
         </div>
         <div class="col-3">
             <div class="card">
