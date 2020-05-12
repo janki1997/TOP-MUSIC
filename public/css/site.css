@@ -1,0 +1,58 @@
+
+  .row {
+    margin-top: 2em;
+  }
+  
+  .registration {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+    margin: auto;
+  }
+  
+  .m-t-b-5 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    font-weight: bolder;
+  }
+  
+  .btn-submit {
+    color: #ffffff;
+    background-color: #0cb8de;
+    border: none;
+    padding: 5px;
+    border: 1px solid #0999b9;
+    width: 100%;
+    cursor: pointer;
+  } 
+  
+  .user_name {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .comments-list .media {
+    border-bottom: 1px dotted #ccc;
+  }
+
+  .multiselect-selected-text{
+    float: left;
+}
+.btn-group{
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    text-align: left;
+}
+.dropdown-toggle::after {
+    float: right;
+    margin-top: 10px;
+}

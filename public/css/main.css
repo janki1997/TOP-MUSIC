@@ -1,0 +1,76 @@
+/* TOP MUSIC
+ * Users
+ * ~
+ */
+
+ a {
+  margin:0.6em;
+}
+
+body {
+  background-color: #ffc0cb;
+}
+
+button {
+  margin:0.25em 1.25em;
+}
+
+footer {
+  margin-top:0.85em;
+}
+
+h1 {
+  margin:0.25em;
+}
+
+h2 {
+  margin:0.4em;
+}
+
+h3 {
+  margin:0.5em;
+}
+
+h4 {
+  margin:0.45em;
+}
+
+ol {
+  margin-bottom:1.65em;
+}
+
+p {
+  font-size:1.25em;
+  margin:0.5em;
+  width:45%;
+}
+
+input {
+  margin:0.65em;
+}
+
+label {
+  font-size:1.45em;
+  margin:0.65em;
+}
+
+main {
+   width:100%;
+}
+
+nav a {
+   padding: 0.65em;
+}
+
+td {
+  height:40px;
+}
+
+th {
+  min-width:100px;
+}
+
+.btn {
+  background-color: #ffffff;
+}
+  

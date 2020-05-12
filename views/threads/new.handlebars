@@ -1,0 +1,38 @@
+{{#if thread.subthread}}
+  <article class="new-comment">
+    <h1>Make a Comment</h1>
+    <form action="/posts" method="POST" class="new-thread-comment">
+      <label>
+        Comment Body
+        <input type="text" name="comment" placeholder="Thread Title" value="{{thread.comment}}" class="comment-body"/> <!--{{thread.comment}} same as below-->
+      </label>
+      <button type="submit">Post Comment</button>
+      <button type="reset">Clear Form</button>
+    </form>
+    <label for="author">
+        Author: {{username}} <!--pass in username from routes-->
+    </label>
+  </article>
+{{else}}
+  <article class="new-thread">
+    <h1>Make a Thread</h1>
+    <form action="/posts" method="POST" class="new-thread-post">
+      <label>
+        Thread Title
+        <input type="text" name="title" placeholder="Thread Title" value="{{thread.title}}" class="thread-title"/> <!--{{thread.title}} in this context saves the content of this part of the form in case the user tries to submit an incomplete form-->
+      </label>
+      <label for="thread-body">
+        Thread Body
+      </label>
+      <textarea id="thread-body" name="body" rows="4" placeholder="Thread Content" class="thread-body">{{thread.body}}</textarea> <!--same as above for {{tread.body}}-->
+      <label for="author">
+        Author: {{username}} <!--pass in username from routes-->
+      </label>
+      
+
+      <button type="submit">Create New Thread</button>
+      <button type="reset">Clear Form</button>
+    </form>
+  </article>
+
+{{/if}}

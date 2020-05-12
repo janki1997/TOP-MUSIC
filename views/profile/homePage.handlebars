@@ -1,0 +1,120 @@
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-9">
+            <form id="sort" method="POST" action="/" name="sort">
+                <label for="dropdown">Sort By:</label>
+                <select id="dropdown" name="dropdown">
+                    <option value="artist">Artist</option>
+                    <option value="comments">Number of Comments</option>
+                    <option value="date">Oldest</option>
+                    <option value="genre">Genre</option>
+                    <option value="likes">Number of Likes</option>
+                </select>
+                <button type="submit">Sort</button>
+            </form>
+            {{#each threadData}}
+            <div class="card mt-3">
+                <div class="d-flex p-2">
+                    <div class="d-flex flex-grow-1">
+                        <img src="https://via.placeholder.com/20" class="rounded-circle mr-2 d-block w-20" alt="img">
+                        {{this.fullName}}
+
+                    </div>
+
+                </div>
+                <div class="card-body p-2">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        {{this.comment}}</h6>
+                    {{!-- <div class="d-flex justify-content-center">
+                        <img src="https://via.placeholder.com/150" class="rounded mr-2 ml-2 d-block" alt="img">
+                        <img src="https://via.placeholder.com/150" class="rounded mr-2 ml-2 d-block" alt="img">
+                    </div> --}}
+
+                </div>
+
+                <div class="card-footer p-2">
+                    <button type="button" class="btn btn-sm btn-light" onclick="commentToggle('{{this._id}}')">
+                        <i class="fas fa-comment-alt mr-1"></i>Comment({{this.commentCount}})
+                    </button>
+
+                    {{#if ../auth}}
+                    <button type="button" class="btn btn-sm btn-light"
+                        onclick="addRemovelike('{{this._id}}', '{{../userID}}')">
+                        {{#if this.userlike}}
+                        <i id={{this._id}} class="fas fa-thumbs-up"></i>
+                        {{else}}
+                        <i id={{this._id}} class="far fa-thumbs-up"></i>
+                        {{/if}}
+
+                        like(<span id="count-{{this._id}}">{{this.likeCount}}</span>)
+                    </button>
+
+                    {{else}}
+                     <button type="button" class="btn btn-sm btn-light" disable>
+                           <i  class="fas fa-thumbs-up"></i>
+                           like({{this.likeCount}})
+                     </button>
+                    {{/if}}
+                </div>
+
+                <div class="comments-list" style="display: none;" id="comment-{{this._id}}">
+                    {{#if ../auth}}
+                    <div class="p-2">
+                        <form method="POST" action="/thread/AddSubThread/1">
+                            <input name="user_id" value="{{../userID}}" type="hidden">
+                            <input name="thread_id" value="{{this._id}}" type="hidden">
+                            <div class="form-group">
+                                <label for="comment">Your Comment</label>
+                                <textarea name="comment" class="form-control" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-light">Send</button>
+                        </form>
+                    </div>
+                    {{/if}}
+                    <div>
+                        {{#each this.subThread}}
+                        <div class="d-flex p-2">
+                            <div class="d-flex flex-grow-1">
+                                <img src="https://via.placeholder.com/20" class="rounded-circle mr-2 d-block w-20"
+                                    alt="img">
+                                {{this.fullName}}
+                            </div>
+                            <div>
+                                <small>{{this.createdDate}}</small>
+                                {{#if ../../auth}}
+                              <a href= "/thread/DeleteSubThread/{{this._id}}/{{../../userID}}" ><i class="fas fa-trash mr-1"></i> </a>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            {{this.comment}}
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{#if message}}
+        <div class="col-9">
+            <h3>{{message}}</h3>
+        </div>
+        {{/if}}
+        <div class="col-3">
+            <div class="card">
+                <h5 class="card-title bg-light text-center">Trending this week</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex">
+                        1
+                        <img src="https://via.placeholder.com/20" class="rounded-circle mr-2 ml-2 d-block w-20"
+                            alt="img">
+                        Cras justo odio
+                    </li>
+                    <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Vestibulum at eros</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

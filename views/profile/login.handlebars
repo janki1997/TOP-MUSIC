@@ -1,0 +1,37 @@
+<main>
+    {{#if error}}
+    <div class="row">
+        <div class="col-4 m-auto">
+            <div class="alert alert-danger  alert-dismissible fade show">
+                {{error}}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        </div>
+    </div>
+    {{/if}}
+    <div class="row">
+        <div class="col-4 m-auto">
+            <form id="login-form" method="POST" action="/access/login">
+                <div class="form-group">
+                    <label for="title">Email</label>
+                    <input type="email" required name="email_address" class="form-control" id="email_address">
+                </div>
+                <div class="form-group">
+                    <label for="title">Password</label>
+                    <input type="password" name="password" class="form-control" id="password">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+                <div class="form-group">
+                    <span>Don't have account? <a href="/access/signUpPage">click here to sign up</a></span>
+                </div>
+                 <div class="form-group">
+                    <span> <a href="/profile/forgetPassword.handlebars">forget password ?</a></span>
+                </div>
+            </form>
+           
+        </div>
+    </div>
+
+</main>
