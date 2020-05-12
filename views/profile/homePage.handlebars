@@ -35,7 +35,7 @@
 
                 <div class="card-footer p-2">
                     <button type="button" class="btn btn-sm btn-light" onclick="commentToggle('{{this._id}}')">
-                        <i class="fas fa-comment-alt mr-1"></i>Comment
+                        <i class="fas fa-comment-alt mr-1"></i>Comment({{this.commentCount}})
                     </button>
 
                     {{#if ../auth}}
@@ -49,6 +49,12 @@
 
                         like(<span id="count-{{this._id}}">{{this.likeCount}}</span>)
                     </button>
+
+                    {{else}}
+                     <button type="button" class="btn btn-sm btn-light" disable>
+                           <i  class="fas fa-thumbs-up"></i>
+                           like({{this.likeCount}})
+                     </button>
                     {{/if}}
                 </div>
 
@@ -60,7 +66,7 @@
                             <input name="thread_id" value="{{this._id}}" type="hidden">
                             <div class="form-group">
                                 <label for="comment">Your Comment</label>
-                                <textarea name="comment" class="form-control" rows="3"></textarea>
+                                <textarea name="comment" class="form-control" rows="3" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-sm btn-light">Send</button>
                         </form>

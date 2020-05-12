@@ -35,22 +35,23 @@ app.use(session({
   saveUninitialized: false
 }));
 
-configRoutes(app);
 
 app.all('/*', function (req, res, next) {
-
-  if (req.session.auth) {
+  
+  if (req.session.auth || req.originalUrl === "/") {
     next();
   } else {
     securityFile(req, val => {
       if (val.res == 0) {
         next();
       } else {
-        res.render("/profile/homePage")
+        res.redirect("/")
       }
     });
   }
 });
+
+configRoutes(app);
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}...`);

@@ -6,11 +6,11 @@
                     <input name="user_id" value="{{userID}}" type="hidden">
                     <div class="form-group">
                         <label for="title">Title</label>
-                        <input type="text" name="title" class="form-control" id="title">
+                        <input type="text" name="title" class="form-control" id="title" required>
                     </div>
                     <div class="form-group">
                         <label for="comment">Comment</label>
-                        <textarea class="form-control" id="comment" rows="3" name="comment"></textarea>
+                        <textarea class="form-control" id="comment" rows="3" name="comment" required></textarea>
                     </div>
                     {{!-- <div class="form-group">
                         <label for="media">media</label>
@@ -46,7 +46,7 @@
 
                 <div class="card-footer p-2">
                     <button type="button" class="btn btn-sm btn-light"  onclick="commentToggle('{{this._id}}')">
-                        <i class="fas fa-comment-alt mr-1"></i>Comment
+                        <i class="fas fa-comment-alt mr-1"></i>Comment({{this.commentCount}})
                     </button>
                     <button type="button" class="btn btn-sm btn-light"
                         onclick="addRemovelike('{{this._id}}', '{{../userID}}')">
@@ -68,7 +68,7 @@
                             <input name="thread_id" value="{{this._id}}" type="hidden">
                             <div class="form-group">
                                 <label for="comment">Your Comment</label>
-                                <textarea name="comment" class="form-control" rows="3"></textarea>
+                                <textarea name="comment" class="form-control" rows="3" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-sm btn-light">Send</button>
                         </form>
