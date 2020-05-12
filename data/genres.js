@@ -9,7 +9,7 @@ const artists = mongoCollections.artists;
 const genres = mongoCollections.genres;
 
 let exportedMethods = {
-  async  GetAllGenres() {
+  async GetAllGenres() {
     try {
       let genresCollection = await genres();
       let genresList = await genresCollection.find({}).toArray();
@@ -21,19 +21,19 @@ let exportedMethods = {
     }
   },
 
-  async  GetGenresById(id) {
+  async GetGenresById(id) {
     try{
       let genersCollection = await genres();
-      let geners = await genersCollection.findOne({ _id: id });
-      if (!geners) throw 'geners not found';
-      return genres;
+      let genre = await genersCollection.findOne({ _id: id });
+      if (!genre) throw 'genre not found';
+      return genre;
     }
   catch (e) {
       throw new Error(e.message)
     }
   },
 
-  async  AddGenres(genreData) {
+  async AddGenres(genreData) {
     try {
       let genresCollection = await genres();
       let insertGenres = await genresCollection.insertMany(genreData);

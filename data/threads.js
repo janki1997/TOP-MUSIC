@@ -8,6 +8,7 @@ const threads = mongoCollections.threads;
 const subThreads = mongoCollections.subThreads;
 const threadLikes = mongoCollections.threadLikes;
 const users = mongoCollections.users;
+const data = require('../data');
 const moment = require('moment');
 
 let exportedMethods = {
@@ -201,7 +202,7 @@ let exportedMethods = {
             const threadCollection = await threads();
             let sort;
             if (input == 'artist') {
-                sort = await threadCollection.find({}).sort({ artists: -1, createdDate: -1 }).toArray();
+                sort = await threadCollection.find({}).sort({ 'artists.artistName': 1, createdDate: -1 }).toArray();
             } else if (input == 'comments') {
                 sort = await threadCollection.find({}).sort({ commentCount: -1, createdDate: -1 }).toArray();
             } else if (input == 'date') {

@@ -30,6 +30,7 @@ function editThread(comment, title, thread_id){
     $('#editComment').val(comment)
     $('#hiddenThreadId').val(thread_id)
     $('#myModal').modal('show')
+
 }
 
 function commentToggle(id){
