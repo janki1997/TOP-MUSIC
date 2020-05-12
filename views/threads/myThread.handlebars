@@ -12,10 +12,25 @@
                         <label for="comment">Comment</label>
                         <textarea class="form-control" id="comment" rows="3" name="comment" required></textarea>
                     </div>
-                    {{!-- <div class="form-group">
-                        <label for="media">media</label>
-                        <input type="file" multiple class="form-control-file" id="media" name='fileUploaded' multiple>
-                    </div> --}}
+                    <div class="form-group">
+                        <label for="genres">Optional Genre Tag</label>
+                        <select id="genres" name="genres_ids" class="form-control">
+                            <option value="" selected> Select genre</option>
+                            {{#each genre_data}}
+                            <option value={{this._id}}>{{this.genreName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="artists">Optional Artist Tag</label>
+                        <select id="artists" name="artist_ids" class="form-control">
+                            <option value="" selected> Select artist</option>
+                            {{#each artist_data}}
+                            <option value={{this._id}}>{{this.artistName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    
                     <button type="submit" class="btn btn-primary">Post</button>
                 </form>
             </div>
@@ -28,7 +43,7 @@
                     </div>
                     <div>
                         <i class="fas fa-pencil-alt mr-1"
-                            onclick="editThread('{{this.comment}}', '{{this.title}}', '{{this._id}}')"></i>
+                            onclick="editThread('{{this.comment}}', '{{this.title}}', '{{this._id}}' )"></i>
                         <a href="/thread/DeleteThread/{{this._id}}/{{../userID}}"> <i class="fas fa-trash mr-1"></i></a>
                     </div>
                 </div>
@@ -60,6 +75,7 @@
 
                         like(<span id="count-{{this._id}}">{{this.likeCount}}</span>)
                     </button>
+                    <p>Tags: {{this.genres}}, {{this.artist}}</p>
                 </div>
                 <div class="comments-list" style="display: none;" id="comment-{{this._id}}">
                     <div class="p-2">
@@ -136,6 +152,25 @@
                         <label for="comment">Comment</label>
                         <textarea class="form-control" id="editComment" rows="3" name="comment"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="editGenres">Optional Genre Tag</label>
+                        <select id="editGenres" name="genres_ids" class="form-control">
+                            <option value="" selected> Select genre</option>
+                            {{#each genre_data}}
+                            <option value={{this._id}}>{{this.genreName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editArtists">Optional Artist Tag</label>
+                        <select id="editArtists" name="artist_ids" class="form-control">
+                            <option value="" selected> Select artist</option>
+                            {{#each artist_data}}
+                            <option value={{this._id}}>{{this.artistName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

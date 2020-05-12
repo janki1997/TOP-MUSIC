@@ -49,12 +49,14 @@
 
                         like(<span id="count-{{this._id}}">{{this.likeCount}}</span>)
                     </button>
+                    <p>Tags: {{this.genres}}, {{this.artist}}</p>
 
                     {{else}}
                      <button type="button" class="btn btn-sm btn-light" disable>
                            <i  class="fas fa-thumbs-up"></i>
                            like({{this.likeCount}})
                      </button>
+                     <p>Tags: {{this.genres}}, {{this.artist}}</p>
                     {{/if}}
                 </div>
 
