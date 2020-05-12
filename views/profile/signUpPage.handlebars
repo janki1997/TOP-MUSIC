@@ -19,7 +19,7 @@
         <div class="form-group">
             <label for="genres">Genres</label>
             <select name="genres_ids" class="m-t-b-5" multiple>
-                <option  value="" selected=""> Select genres</option>
+                {{!-- <option value="" selected> Select genres</option> --}}
                 {{#each genre_data}}
                 <option value={{this._id}}>{{this.genreName}}</option>
                 {{/each}}
@@ -28,7 +28,7 @@
         <div class="form-group">
             <label for="artist">Artist</label>
             <select name="artist_ids" class="m-t-b-5" multiple>
-                <option  value="" selected=""> Select artist</option>
+                {{!-- <option value="" selected> Select artist</option> --}}
                 {{#each artist_data}}
                 <option value={{this._id}}>{{this.artistName}}</option>
                 {{/each}}

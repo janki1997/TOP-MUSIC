@@ -27,9 +27,9 @@ router.post("/registration", async (req, res) => {
             res.status(404).render("profile/signUpPage", { layout: "main", "error_message": "Please provide email address." });
         } else if (!req.body.password) {
             res.status(404).render("profile/signUpPage", { layout: "main", "error_message": "Please provide password." });
-        } else if (!req.body.genres_ids.length) {
+        } else if (!req.body.genres_ids) {
             res.status(404).render("profile/signUpPage", { layout: "main", "error_message": "Please provide genres information." });
-        } else if (!req.body.artist_ids.length) {
+        } else if (!req.body.artist_ids) {
             res.status(404).render("profile/signUpPage", { layout: "main", "error_message": "Please provide artist information." });
         } else {
             let userData = {
