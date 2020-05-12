@@ -6,16 +6,31 @@
                     <input name="user_id" value="{{userID}}" type="hidden">
                     <div class="form-group">
                         <label for="title">Title</label>
-                        <input type="text" name="title" class="form-control" id="title" required>
+                        <input type="text" name="title" class="form-control" id="title">
                     </div>
                     <div class="form-group">
                         <label for="comment">Comment</label>
-                        <textarea class="form-control" id="comment" rows="3" name="comment" required></textarea>
+                        <textarea class="form-control" id="comment" rows="3" name="comment"></textarea>
                     </div>
-                    {{!-- <div class="form-group">
-                        <label for="media">media</label>
-                        <input type="file" multiple class="form-control-file" id="media" name='fileUploaded' multiple>
-                    </div> --}}
+                    <!--optional tags, copy signup dropdown for genres and artists LOOK AT LECTURE GITHUB-->
+                    <div class="form-group">
+                        <label for="genres">Genres Tag</label>
+                        <select name="genres_ids" class="m-t-b-5" multiple>
+                            <option  value="" selected=""> Select genres</option>
+                            {{#each genre_data}}
+                            <option value={{this._id}}>{{this.genreName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="artist">Artist</label>
+                        <select name="artist_ids" class="m-t-b-5" multiple>
+                            <option  value="" selected=""> Select artist</option>
+                            {{#each artist_data}}
+                            <option value={{this._id}}>{{this.artistName}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary">Post</button>
                 </form>
             </div>
@@ -46,7 +61,7 @@
 
                 <div class="card-footer p-2">
                     <button type="button" class="btn btn-sm btn-light"  onclick="commentToggle('{{this._id}}')">
-                        <i class="fas fa-comment-alt mr-1"></i>Comment({{this.commentCount}})
+                        <i class="fas fa-comment-alt mr-1"></i>Comment
                     </button>
                     <button type="button" class="btn btn-sm btn-light"
                         onclick="addRemovelike('{{this._id}}', '{{../userID}}')">
@@ -68,7 +83,7 @@
                             <input name="thread_id" value="{{this._id}}" type="hidden">
                             <div class="form-group">
                                 <label for="comment">Your Comment</label>
-                                <textarea name="comment" class="form-control" rows="3" required></textarea>
+                                <textarea name="comment" class="form-control" rows="3"></textarea>
                             </div>
                             <button type="submit" class="btn btn-sm btn-light">Send</button>
                         </form>

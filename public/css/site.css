@@ -42,17 +42,3 @@
   .comments-list .media {
     border-bottom: 1px dotted #ccc;
   }
-
-  .multiselect-selected-text{
-    float: left;
-}
-.btn-group{
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
-    text-align: left;
-}
-.dropdown-toggle::after {
-    float: right;
-    margin-top: 10px;
-}

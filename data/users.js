@@ -37,22 +37,10 @@ async function CheckUserExist(emailAddress) {
     catch (e) {
         throw new Error(e.message)
     }
-};
-
-async function updatePassword(id, password){
-    try {
-        let userCollection = await users();
-        let user = await userCollection.updateOne({ _id : id}, {$set : {password : password}});
-        return true;
-    }
-    catch (e) {
-        throw new Error(e.message)
-    }
-};
+}
 
 module.exports = {
     CreateUser,
     GetUserById,
-    CheckUserExist,
-    updatePassword 
+    CheckUserExist
 }

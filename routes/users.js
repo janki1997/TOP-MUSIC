@@ -100,4 +100,6 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+//set up route to route to profile page, use get
+
 module.exports = router;

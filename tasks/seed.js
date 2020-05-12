@@ -164,7 +164,7 @@ async function AddDataToDatabase() {
             });
         });
         var insertArtist = await data.artists.AddArtists(artist_array);
-        console.log("genre and artist data inserted successfully");
+        console.log("genre data inserted successfully");
         await db.serverConfig.close();
     }
     catch (e) {
