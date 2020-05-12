@@ -1,6 +1,17 @@
 <div class="container">
     <div class="row mt-3">
         <div class="col-9">
+            <form id="sort" method="POST" action="/" name="sort">
+                <label for="dropdown">Sort By:</label>
+                <select id="dropdown" name="dropdown">
+                    <option value="artist">Artist</option>
+                    <option value="comments">Number of Comments</option>
+                    <option value="date">Oldest</option>
+                    <option value="genre">Genre</option>
+                    <option value="likes">Number of Likes</option>
+                </select>
+                <button type="submit">Sort</button>
+            </form>
             {{#each threadData}}
             <div class="card mt-3">
                 <div class="d-flex p-2">
@@ -44,7 +55,7 @@
                 <div class="comments-list" style="display: none;" id="comment-{{this._id}}">
                     {{#if ../auth}}
                     <div class="p-2">
-                        <form method="POSt" action="/thread/AddSubThread/1">
+                        <form method="POST" action="/thread/AddSubThread/1">
                             <input name="user_id" value="{{../userID}}" type="hidden">
                             <input name="thread_id" value="{{this._id}}" type="hidden">
                             <div class="form-group">
