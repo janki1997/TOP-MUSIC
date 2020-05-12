@@ -20,7 +20,9 @@ router.post("/createNewThread", async (req, res) => {
                 lastUpdatedDate: moment(new Date()).format("DD/MM/YYYY HH:mm:ss"),
                 userId: req.body.user_id,
                 likeCount: 0,
-                commentCount: 0
+                commentCount: 0,
+                genres: req.body.genres_ids,
+                artist: req.body.artist_ids
             }
 
             let insertThread = await data.threads.AddThread(threadData);
@@ -29,6 +31,8 @@ router.post("/createNewThread", async (req, res) => {
             let thread_ids = getThreadData.map(x => x._id);
             let getsubThreadData = await data.threads.GetSubThread(thread_ids);
             let getLikeData = await data.threads.getThreadLikeWise(thread_ids, req.body.user_id);
+            let artist_data = await data.artists.GetAllArtists();
+            let genre_data = await data.genres.GetAllGenres();
             getThreadData.forEach(element => {
                 getLikeData.forEach(lelement => {
                     if (element._id == lelement.threadId && element.userId == req.body.user_id) {
@@ -46,7 +50,7 @@ router.post("/createNewThread", async (req, res) => {
                 element["fullName"] = user_data.fullName;
                 element["profileLogo"] = user_data.profileLogo;
             });
-            res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.body.user_id })
+            res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.body.user_id, artist_data: artist_data, genre_data: genre_data })
 
         }
     } catch (e) {
@@ -97,6 +101,8 @@ router.post("/UpdateThread", async (req, res) => {
             let thread_ids = getThreadData.map(x => x._id);
             let getsubThreadData = await data.threads.GetSubThread(thread_ids);
             let getLikeData = await data.threads.getThreadLikeWise(thread_ids, req.body.user_id);
+            let artist_data = await data.artists.GetAllArtists();
+            let genre_data = await data.genres.GetAllGenres();
             getThreadData.forEach(element => {
                 getLikeData.forEach(lelement => {
                     if (element._id == lelement.threadId && element.userId == req.body.user_id) {
@@ -109,12 +115,12 @@ router.post("/UpdateThread", async (req, res) => {
                         element["subThread"].push(selement)
                     }
                 });
-            })
+            });
             getThreadData.forEach(element => {
                 element["fullName"] = user_data.fullName;
                 element["profileLogo"] = user_data.profileLogo;
             });
-            res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.body.user_id })
+            res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.body.user_id, artist_data: artist_data, genre_data: genre_data })
         }
     } catch (e) {
         res.status(401).redirect('/');
@@ -129,6 +135,8 @@ router.get("/DeleteThread/:thread_id/:user_id", async (req, res) => {
         let thread_ids = getThreadData.map(x => x._id);
         let getsubThreadData = await data.threads.GetSubThread(thread_ids);
         let getLikeData = await data.threads.getThreadLikeWise(thread_ids, req.params.user_id);
+        let artist_data = await data.artists.GetAllArtists();
+        let genre_data = await data.genres.GetAllGenres();
         getThreadData.forEach(element => {
             getLikeData.forEach(lelement => {
                 if (element._id == lelement.threadId && element.userId == req.params.user_id) {
@@ -146,7 +154,7 @@ router.get("/DeleteThread/:thread_id/:user_id", async (req, res) => {
             element["fullName"] = user_data.fullName;
             element["profileLogo"] = user_data.profileLogo;
         });
-        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.params.user_id })
+        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.params.user_id, artist_data: artist_data, genre_data: genre_data })
 
     } catch (e) {
         res.status(401).redirect('/');
@@ -178,7 +186,9 @@ router.get("/UserThread", async (req, res) => {
             element["fullName"] = user_data.fullName;
             element["profileLogo"] = user_data.profileLogo;
         });
-        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: user_id });
+        let artist_data = await data.artists.GetAllArtists();
+        let genre_data = await data.genres.GetAllGenres();
+        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: user_id, artist_data: artist_data, genre_data: genre_data });
     } catch (e) {
         res.status(401).redirect('/');
     }
@@ -232,6 +242,8 @@ router.post("/AddSubThread/:is_homepage", async (req, res) => {
                 let thread_ids = getThreadData.map(x => x._id);
                 let getsubThreadData = await data.threads.GetSubThread(thread_ids);
                 let getLikeData = await data.threads.getThreadLikeWise(thread_ids, req.body.user_id);
+                let artist_data = await data.artists.GetAllArtists();
+                let genre_data = await data.genres.GetAllGenres();
                 getThreadData.forEach(element => {
                     getLikeData.forEach(lelement => {
                         if (element._id == lelement.threadId && element.userId == req.body.user_id) {
@@ -249,7 +261,7 @@ router.post("/AddSubThread/:is_homepage", async (req, res) => {
                     element["fullName"] = user_data.fullName;
                     element["profileLogo"] = user_data.profileLogo;
                 })
-                res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.body.user_id });
+                res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.body.user_id, artist_data: artist_data, genre_data: genre_data });
             }
         }
     } catch (e) {
@@ -265,6 +277,8 @@ router.get("/DeleteSubThread/:sub_thread_id/:user_id", async (req, res) => {
         let thread_ids = getThreadData.map(x => x._id);
         let getsubThreadData = await data.threads.GetSubThread(thread_ids);
         let getLikeData = await data.threads.getThreadLikeWise(thread_ids, req.params.user_id);
+        let artist_data = await data.artists.GetAllArtists();
+        let genre_data = await data.genres.GetAllGenres();
         getThreadData.forEach(element => {
             getLikeData.forEach(lelement => {
                 if (element._id == lelement.threadId && element.userId == req.params.user_id) {
@@ -282,7 +296,7 @@ router.get("/DeleteSubThread/:sub_thread_id/:user_id", async (req, res) => {
             element["fullName"] = user_data.fullName;
             element["profileLogo"] = user_data.profileLogo;
         })
-        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.params.user_id })
+        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.params.user_id, artist_data: artist_data, genre_data: genre_data })
 
     } catch (e) {
         res.status(401).redirect('/');

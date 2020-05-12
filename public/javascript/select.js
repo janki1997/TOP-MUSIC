@@ -3,3 +3,9 @@ $("select").on('change', function(e) {
         $('option[value="' + $(this).val().toString().split(',')[3] + '"]').prop('selected', false);
     }
 });
+
+$(document).ready(function() {
+    $('.multiple-checkboxes').multiselect({
+    includeSelectAllOption: true,
+    });
+});
