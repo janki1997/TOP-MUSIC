@@ -1,24 +1,22 @@
-{{#if error_message}}
-<p> {{error_message}} </p>
-{{/if}}
-
+<div id="error" class="error"></div>
 <div class="registration">
-    <form method="post" action="/access/registration">
+    <form method="post" action="/access/registration" id="myForm">
         <div class="form-group">
             <label for="full_name">Full Name</label>
-            <input name="full_name" required class="m-t-b-5" placeholder="Full name" type="text">
+            <input id="full_name" name="full_name" required class="m-t-b-5" placeholder="Full name" type="text">
         </div>
         <div class="form-group">
             <label for="email">Email</label>
-            <input name="email_address" required class="m-t-b-5" placeholder="Email address" type="email">
+            <input id="email" name="email_address" required class="m-t-b-5" placeholder="Email address" type="email">
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input name="password" required class="m-t-b-5" placeholder="Create password" type="password">
+            <input id="password" name="password" required class="m-t-b-5" placeholder="Create password" type="password">
         </div>
         <div class="form-group">
             <label for="genres">Genres</label>
-            <select name="genres_ids" class="m-t-b-5" multiple>
+            <p>Select up to 3 genres</p>
+            <select id="genres" name="genres_ids" class="m-t-b-5" multiple>
                 {{!-- <option value="" selected> Select genres</option> --}}
                 {{#each genre_data}}
                 <option value={{this._id}}>{{this.genreName}}</option>
@@ -26,8 +24,9 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="artist">Artist</label>
-            <select name="artist_ids" class="m-t-b-5" multiple>
+            <label for="artists">Artists</label>
+            <p>Select up to 3 artists</p>
+            <select id="artists" name="artist_ids" class="m-t-b-5" multiple>
                 {{!-- <option value="" selected> Select artist</option> --}}
                 {{#each artist_data}}
                 <option value={{this._id}}>{{this.artistName}}</option>
@@ -35,8 +34,8 @@
             </select>
         </div>
         <div>
-            <button class="btn-submit" type="submit">submit</button>
-            <button class="btn-submit" type="reset">Reset</button>
+            <button class="btn-submit" type="submit" id="submit">Submit</button>
+            <button class="btn-submit" type="reset" id="reset">Reset</button>
         </div>
     </form>
 </div>

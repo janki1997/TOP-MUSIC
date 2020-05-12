@@ -21,16 +21,18 @@ router.get('/signUpPage', async (req, res) => {
 //Registration Api
 router.post("/registration", async (req, res) => {
     try {
+        let artist_data = await data.artists.GetAllArtists();
+        let genre_data = await data.genres.GetAllGenres();
         if (!req.body.full_name) {
-            res.status(404).render("profile/signUpPage", { layout: "main", "error_message": "Please provide full name." });
+            res.status(404).render("profile/signUpPage", { layout: "main", artist_data: artist_data, genre_data: genre_data });
         } else if (!req.body.email_address) {
-            res.status(404).render("profile/signUpPage", { layout: "main", "error_message": "Please provide email address." });
+            res.status(404).render("profile/signUpPage", { layout: "main", artist_data: artist_data, genre_data: genre_data });
         } else if (!req.body.password) {
-            res.status(404).render("profile/signUpPage", { layout: "main", "error_message": "Please provide password." });
+            res.status(404).render("profile/signUpPage", { layout: "main", artist_data: artist_data, genre_data: genre_data });
         } else if (!req.body.genres_ids) {
-            res.status(404).render("profile/signUpPage", { layout: "main", "error_message": "Please provide genres information." });
+            res.status(404).render("profile/signUpPage", { layout: "main", artist_data: artist_data, genre_data: genre_data });
         } else if (!req.body.artist_ids) {
-            res.status(404).render("profile/signUpPage", { layout: "main", "error_message": "Please provide artist information." });
+            res.status(404).render("profile/signUpPage", { layout: "main", artist_data: artist_data, genre_data: genre_data });
         } else {
             let userData = {
                 _id: uuid.v4(),
