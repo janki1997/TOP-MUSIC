@@ -5,9 +5,13 @@ async function CheckAuthencation(req, callback) {
     },{
         name: 'registration'
     }, {
+        name: 'forgetPassword'
+    }, {    
         name: 'login'
     }, {
-        name: 'main'
+        name: 'homePage'
+    }, {
+        name: 'changePassword'
     }];
 
     var return_data = access_service.filter(element => {

@@ -14,5 +14,7 @@ module.exports = {
   genres: getCollectionFn("genres"),
   metrics: getCollectionFn("metrics"),
   threads: getCollectionFn("threads"),
-  users: getCollectionFn("users")
+  users: getCollectionFn("users"),
+  threadLikes: getCollectionFn("threadLikes"),
+  subThreads: getCollectionFn("subThreads"),
 };
