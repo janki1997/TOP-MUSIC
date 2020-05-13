@@ -5,6 +5,8 @@
 
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
+const genres = mongoCollections.genres;
+const artists = mongoCollections.artists;
 
 async function GetUserById(id) {
     try {
@@ -39,10 +41,10 @@ async function CheckUserExist(emailAddress) {
     }
 };
 
-async function updatePassword(id, password){
+async function updatePassword(id, password) {
     try {
         let userCollection = await users();
-        let user = await userCollection.updateOne({ _id : id}, {$set : {password : password}});
+        let user = await userCollection.updateOne({ _id: id }, { $set: { password: password } });
         return true;
     }
     catch (e) {
@@ -50,9 +52,21 @@ async function updatePassword(id, password){
     }
 };
 
+async function updateUserProfile(user_data, id) {
+    try {
+        let userCollection = await users();
+        let user = await userCollection.updateOne({ _id: id }, { $set: user_data });
+        return true;
+    }
+    catch (e) {
+        throw new Error(e.message)
+    }
+}
+
 module.exports = {
     CreateUser,
     GetUserById,
     CheckUserExist,
-    updatePassword 
+    updatePassword,
+    updateUserProfile
 }

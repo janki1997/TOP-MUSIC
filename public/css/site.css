@@ -56,3 +56,44 @@
     float: right;
     margin-top: 10px;
 }
+
+.error{
+  color :#FA8072;
+  padding : 3px;
+  text-align: center;
+  font-size: 20px;
+}
+
+#p-hint, #u-hint{
+  color : #696969	;
+  background-color: lightgoldenrodyellow;
+  font-size: 12px;
+  margin-top: 2px;
+  padding: 2px 0 2px 12px
+}
+
+.success-login{
+  text-align : center;
+}
+
+.multiselect-container.dropdown-menu {
+  max-height: 250px;
+  overflow:scroll;
+}
+
+.artist-images{
+  width : 35px;
+  height : 35px;
+}
+
+.list-group.list-group-flush{
+  max-height: 250px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+h5.card-title.text-center{
+  background: #1E90FF;
+  color :#ffffff;
+  padding: 10px;
+}

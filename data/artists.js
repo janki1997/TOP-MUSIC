@@ -30,12 +30,17 @@ let exportedMethods = {
             throw new Error(e.message)
         }
     },
-    async incrementCountById(id){
-        if (id === undefined) return Promise.reject('No id provided');
-        const artistCollection = await artists();
-        // Can increment positively or negatively by any value
-        return artistCollection
-          .updateOne({ _id: id }, { $inc: { count: 1 } })
+    async incrementCountById(id) {
+        try {
+            if (id === undefined) return Promise.reject('No id provided');
+            const artistCollection = await artists();
+            // Can increment positively or negatively by any value
+            return artistCollection
+                .updateOne({ _id: id }, { $inc: { count: 1 } });
+        }
+        catch (e) {
+            throw new Error(e.message)
+        }
     },
     async  AddArtists(artistData) {
         try {
@@ -75,7 +80,7 @@ let exportedMethods = {
         }
     },
     async updateArtist(id, artistName, artistMembers, yearFormed, genres, recordLabel, albums) {
-        try{
+        try {
             if (id === undefined) return Promise.reject('No id provided');
             if (artistName === undefined) return Promise.reject('No artist name provided');
             if (artistMembers === undefined) return Promise.reject('No artist members provided');
@@ -99,7 +104,7 @@ let exportedMethods = {
             if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Update failed';
             return this.GetArtistsById(id);
         }
-    catch (e) {
+        catch (e) {
             throw new Error(e.message)
         }
     },

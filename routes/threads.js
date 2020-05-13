@@ -237,6 +237,9 @@ router.post("/AddSubThread/:is_homepage", async (req, res) => {
                 let thread_ids = getThreadData.map(x => x._id);
                 let getLikeData = await data.threads.getThreadLikeWise(thread_ids, req.body.user_id);
                 let getsubThreadData = await data.threads.GetSubThread(thread_ids);
+                let top_artist = await data.metrics.topTenArtists();
+                let top_genres = await data.metrics.topTenGenres();
+                let top_artist_by_genres = await data.metrics.topTenArtistsbyGenre();
                 getThreadData.forEach(element => {
                     getLikeData.forEach(lelement => {
                         if (element._id == lelement.threadId && element.userId == req.body.user_id) {
@@ -255,7 +258,10 @@ router.post("/AddSubThread/:is_homepage", async (req, res) => {
                     layout: "main",
                     auth: req.session.auth,
                     threadData: getThreadData,
-                    userID: req.body.user_id
+                    userID: req.body.user_id,
+                    top_artist : top_artist,
+                    top_genres : top_genres,
+                    top_artist_by_genres : top_artist_by_genres
                 });
 
             } else {

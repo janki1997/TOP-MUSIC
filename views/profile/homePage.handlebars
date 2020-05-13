@@ -1,6 +1,37 @@
 <div class="container">
     <div class="row mt-3">
-        <div class="col-9">
+        <div class="col-3">
+            <div class="card">
+                <h5 class="card-title text-center">Top Genres</h5>
+                <ul class="list-group list-group-flush">
+                    {{#each top_genres}}
+                    <li class="list-group-item d-flex">
+                        {{inc @index}}. {{this}}
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+            <div class="card mt-3">
+                <h5 class="card-title text-center">Top Artist by Genres</h5>
+                <ul class="list-group list-group-flush">
+                    {{#each top_artist_by_genres}}
+                    <li class="list-group-item d-flex">
+                    {{inc @index}}.
+                       <img src="/public/images/{{this.profileLogo}}"
+                            class="rounded-circle mr-2 ml-2 d-block w-20 artist-images" alt="img"> {{this.artistName }}<br />
+                        Genres: {{this.genreName }}
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+
+        {{#if message}}
+        <div class="col-6">
+            <h3>{{message}}</h3>
+        </div>
+        {{else}}
+        <div class="col-6">
             <form id="sort" method="POST" action="/" name="sort">
                 <label for="dropdown">Sort By:</label>
                 <select id="dropdown" name="dropdown">
@@ -52,11 +83,11 @@
                     <p>Tags: {{this.genres}}, {{this.artist}}</p>
 
                     {{else}}
-                     <button type="button" class="btn btn-sm btn-light" disable>
-                           <i  class="fas fa-thumbs-up"></i>
-                           like({{this.likeCount}})
-                     </button>
-                     <p>Tags: {{this.genres}}, {{this.artist}}</p>
+                    <button type="button" class="btn btn-sm btn-light" disable>
+                        <i class="fas fa-thumbs-up"></i>
+                        like({{this.likeCount}})
+                    </button>
+                    <p>Tags: {{this.genres}}, {{this.artist}}</p>
                     {{/if}}
                 </div>
 
@@ -85,7 +116,8 @@
                             <div>
                                 <small>{{this.createdDate}}</small>
                                 {{#if ../../auth}}
-                              <a href= "/thread/DeleteSubThread/{{this._id}}/{{../../userID}}" ><i class="fas fa-trash mr-1"></i> </a>
+                                <a href="/thread/DeleteSubThread/{{this._id}}/{{../../userID}}"><i
+                                        class="fas fa-trash mr-1"></i> </a>
                                 {{/if}}
                             </div>
                         </div>
@@ -98,25 +130,24 @@
             </div>
             {{/each}}
         </div>
-        {{#if message}}
-        <div class="col-9">
-            <h3>{{message}}</h3>
-        </div>
         {{/if}}
+
         <div class="col-3">
-            <div class="card">
-                <h5 class="card-title bg-light text-center">Trending this week</h5>
+            <div class="card top-genres">
+                <h5 class="card-title text-center">Top Artist</h5>
                 <ul class="list-group list-group-flush">
+                    {{#each top_artist}}
                     <li class="list-group-item d-flex">
-                        1
-                        <img src="https://via.placeholder.com/20" class="rounded-circle mr-2 ml-2 d-block w-20"
-                            alt="img">
-                        Cras justo odio
+                        {{inc @index}}.
+                        <img src="/public/images/{{this.profileLogo}}"
+                            class="rounded-circle mr-2 ml-2 d-block w-20 artist-images" alt="img">
+                        {{this.artistName}}
                     </li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
+                    {{/each}}
                 </ul>
             </div>
         </div>
+
+
     </div>
 </div>

@@ -37,7 +37,8 @@ app.use(session({
 
 
 app.all('/*', function (req, res, next) {
-  
+  res.header("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers,crossdomain,withcredentials,Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Origin,TokenType");
   if (req.session.auth || req.originalUrl === "/") {
     next();
   } else {

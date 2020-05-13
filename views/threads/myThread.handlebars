@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row mt-3">
-        <div class="col-9">
+        <div class="col-12">
             <div class="card p-2 mb-5">
                 <form method="POST" action="/thread/createNewThread">
                     <input name="user_id" value="{{userID}}" type="hidden">
@@ -110,22 +110,6 @@
                 </div>
             </div>
             {{/each}}
-        </div>
-
-        <div class="col-3">
-            <div class="card">
-                <h5 class="card-title bg-light text-center">Trending this week</h5>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex">
-                        1
-                        <img src="https://via.placeholder.com/20" class="rounded-circle mr-2 ml-2 d-block w-20"
-                            alt="img">
-                        Cras justo odio
-                    </li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>

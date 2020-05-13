@@ -1,102 +1,112 @@
-/* TOP MUSIC
- * Users
- * ~
- */
-
 const express = require('express');
 const router = express.Router();
 const data = require('../data');
-const userData = data.users;
+const moment = require('moment');
+const jwt = require('jsonwebtoken');
 
-router.get('/:id', async (req, res) => {
+router.get("/userProfile", async (req, res) => {
   try {
-    let user = await userData.getUserById(req.params.id);
-    res.json(user);
-  } catch (error) {
-    res.status(404).json({error: 'User not found'});
-  }
-});
+    if (req.session.auth) {
+      let user_id = await jwt.verify(req.session.auth, 'secret').userid;
+      let artist_data = await data.artists.GetAllArtists();
+      let genre_data = await data.genres.GetAllGenres();
+     
+      if (user_id) {
+        var user_data = await data.users.GetUserById(user_id);
+       user_data["password"] = data.encryption.decrypt(user_data.password);
+       genre_data.forEach(element=>{
+         if( user_data.genres ){
 
-router.get('/', async (req, res) => {
-  try {
-    let userList = await userData.getAllUsers();
-    res.json(userList);
-  } catch (error) {
-    res.sendStatus(500);
-  }
-});
+           user_data.genres.forEach(gelement=>{
+             if(element._id == gelement){
+               element["selected"] = 1
+             }
+           });
+         }
+      })
 
-router.post('/', async (req, res) => {
-  let userInfo = req.body;
+      artist_data.forEach(element=>{
+        if(user_data.artist){
 
-  if (!userInfo) {
-    res.status(400).json({error: 'You must provide data to create a user'});
-    return;
-  }
-
-  if (!userInfo.firstName) {
-    res.status(400).json({error: 'You must provide a first name'});
-    return;
-  }
-
-  if (!userInfo.lastName) {
-    res.status(400).json({error: 'You must provide a last name'});
-    return;
-  }
-
-  try {
-    const newUser = await userData.addUser(userInfo.firstName, userInfo.lastName);
-    res.json(newUser);
-  } catch (error) {
-    res.sendStatus(500);
-  }
-});
-
-router.put('/:id', async (req, res) => {
-  let userInfo = req.body;
-
-  if (!userInfo) {
-    res.status(400).json({error: 'You must provide data to update a user'});
-    return;
-  }
-
-  if (!userInfo.firstName) {
-    res.status(400).json({error: 'You must provide a first name'});
-    return;
-  }
-
-  if (!userInfo.lastName) {
-    res.status(400).json({error: 'You must provide a last name'});
-    return;
-  }
-
-  try {
-    await userData.getUserById(req.params.id);
+          user_data.artist.forEach(gelement=>{
+            if(element._id == gelement){
+              element["selected"] = 1
+            }
+          });
+        }
+      })
+        res.render("profile/userProfile", { 
+          layout: "main",
+           user_data: user_data,
+           artist_data : artist_data,
+           genre_data : genre_data,
+           auth : req.session.auth
+          });
+      } else {
+        res.redirect('/');
+      }
+    } else {
+      res.redirect('/');
+    }
   } catch (e) {
-    res.status(404).json({error: 'User not found'});
-    return;
-  }
-  try {
-    const updatedUser = await userData.updateUser(req.params.id, userInfo);
-    res.json(updatedUser);
-  } catch (error) {
-    res.sendStatus(500);
+    res.redirect('/');
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.post("/profileUpdate", async (req, res) => {
   try {
-    await userData.getUserById(req.params.id);
-  } catch (error) {
-    res.status(404).json({error: 'User not found'});
-    return;
-  }
+    if(!req.body.user_id){
+      res.redirect('/');
+    }else{
+      let update_data = {
+        fullName: req.body.full_name,
+        password: data.encryption.encrypt(req.body.password),
+        genres: (req.body.genres_ids) ? req.body.genres_ids : [], 
+        artist: (req.body.artist_ids) ? req.body.artist_ids : [],
+        isDeleted: 0,
+        lastUpdatedDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+        profileLogo: req.body.profileLogo,
+        contactNo : req.body.contact
+      };
+      let update_user_data = await data.users.updateUserProfile(update_data, req.body.user_id);
+      let artist_data = await data.artists.GetAllArtists();
+      let genre_data = await data.genres.GetAllGenres();
+      let user_data = {
+        fullName : req.body.full_name,
+        password : req.body.password,
+        contactNo : req.body.contact,
+        emailAddress : req.body.email_address,
+        genres: (req.body.genres_ids) ? req.body.genres_ids : [], 
+        artist: (req.body.artist_ids) ? req.body.artist_ids : [],
+        _id :  req.body.user_id
+      }
 
-  try {
-    await userData.removeUser(req.params.id);
-    res.sendStatus(200);
-  } catch (error) {
-    res.sendStatus(500);
+      genre_data.forEach(element=>{
+        user_data.genres.forEach(gelement=>{
+          if(element._id == gelement){
+            element["selected"] = 1
+          }
+        });
+      })
+
+      artist_data.forEach(element=>{
+        user_data.artist.forEach(gelement=>{
+          if(element._id == gelement){
+            element["selected"] = 1
+          }
+        });
+      })
+       res.render("profile/userProfile", { 
+         layout: "main",
+          user_data:user_data,
+          artist_data : artist_data,
+          genre_data : genre_data,
+          auth : req.session.auth,
+          message : "User profile updated successfully"
+         });
+    }
+  } catch (e) {
+    res.redirect('/');
   }
 });
 
