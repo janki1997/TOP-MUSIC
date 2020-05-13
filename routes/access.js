@@ -17,7 +17,6 @@ router.get('/signUpPage', async (req, res) => {
     }
 });
 
-
 //Registration Api
 router.post("/registration", async (req, res) => {
     try {
@@ -128,7 +127,7 @@ router.post("/login", async (req, res) => {
                 res.status(404).render("profile/login", { layout: "main", error: "Incorrect email address/password." });
             }
         }
-    } catch (e) {
+    } catch (error) {
         res.status(404).render("profile/login", { layout: "main" });
     }
 });

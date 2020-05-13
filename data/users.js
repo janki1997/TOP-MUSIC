@@ -8,6 +8,18 @@ const users = mongoCollections.users;
 const genres = mongoCollections.genres;
 const artists = mongoCollections.artists;
 
+async  function GetAllUsers() {
+    try {
+        let usersCollection = await users();
+        let usersList = await usersCollection.find().toArray();
+        if (!usersList.length) throw 'There are no users in the system';
+        return usersList;
+    }
+    catch (error) {
+        throw new Error(error.message)
+    }
+};
+
 async function GetUserById(id) {
     try {
         const userCollection = await users();
@@ -65,6 +77,7 @@ async function updateUserProfile(user_data, id) {
 
 module.exports = {
     CreateUser,
+    GetAllUsers,
     GetUserById,
     CheckUserExist,
     updatePassword,

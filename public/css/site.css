@@ -1,57 +1,92 @@
 
-  .row {
-    margin-top: 2em;
-  }
-  
-  .registration {
-    display: flex;
-    flex-direction: column;
-    width: 35%;
-    margin: auto;
-  }
-  
-  .m-t-b-5 {
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group label {
-    font-weight: bolder;
-  }
-  
-  .btn-submit {
-    color: #ffffff;
-    background-color: #0cb8de;
-    border: none;
-    padding: 5px;
-    border: 1px solid #0999b9;
-    width: 100%;
-    cursor: pointer;
-  } 
-  
-  .user_name {
-    font-size: 14px;
-    font-weight: bold;
-  }
-  
-  .comments-list .media {
-    border-bottom: 1px dotted #ccc;
-  }
+body {
+  background-color: #fddddb;
+  background-image: url();
+}
 
-  .multiselect-selected-text{
-    float: left;
+footer {
+  margin-top:100px;
 }
+
 .btn-group{
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
-    text-align: left;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  text-align: left;
 }
+.btn-submit {
+  color: #ffffff;
+  background-color: #0cb8de;
+  border: none;
+  padding: 5px;
+  border: 1px solid #0999b9;
+  width: 100%;
+  cursor: pointer;
+} 
+
+.card {
+  padding:0.65em 0;
+  opacity: 0.65;
+}
+
+.dropdown-menu {
+  margin-left:-4.25em;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: bolder;
+}
+
+.navbar-brand {
+  font-size:2em;
+  font-weight:bold;
+}
+
+.neon-red-girl {
+  margin-top:2em;
+  text-align: center;
+}
+
+.neon-red-girl img {
+  height:200px;
+}
+
+.row {
+  margin-top: 2em;
+}
+
+.m-t-b-5 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.registration {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 1.25em;
+  text-align: center;
+  width: 35%;
+}
+
+.user_name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.comments-list .media {
+  border-bottom: 1px dotted #ccc;
+}
+
+.multiselect-selected-text{
+  float: left;
+}
+
 .dropdown-toggle::after {
     float: right;
     margin-top: 10px;
@@ -92,8 +127,17 @@
     -webkit-overflow-scrolling: touch;
 }
 
+.list-group-item {
+  min-height: 85px;
+  padding: 1.25rem 1.25rem;
+}
+
 h5.card-title.text-center{
   background: #1E90FF;
   color :#ffffff;
   padding: 10px;
+}
+
+.multiselect.btn {
+  background-color: #ffffff;
 }
