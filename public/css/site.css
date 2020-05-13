@@ -3,6 +3,11 @@ body {
   background-color: #fddddb;
   background-image: url();
 }
+
+footer {
+  margin-top:100px;
+}
+
 .btn-group{
   background-clip: padding-box;
   border: 1px solid #ced4da;
@@ -122,8 +127,17 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
+.list-group-item {
+  min-height: 85px;
+  padding: 1.25rem 1.25rem;
+}
+
 h5.card-title.text-center{
   background: #1E90FF;
   color :#ffffff;
   padding: 10px;
+}
+
+.multiselect.btn {
+  background-color: #ffffff;
 }

@@ -3,7 +3,6 @@
  * ~
  */
 
-const accessRoutes = require("./access");
 const data = require("../data");
 const threads = require("./threads");
 const users = require("./users");
