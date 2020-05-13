@@ -22,8 +22,8 @@ router.post("/createNewThread", async (req, res) => {
             }
             let threadData = {
                 _id: uuid.v4(),
-                title: req.body.title,
-                comment: (req.body.comment) ? req.body.comment : "",
+                title: xss(req.body.title),
+                comment: (xss(req.body.comment)) ? xss(req.body.comment) : "",
                 createdDate: moment(new Date()).format("DD/MM/YYYY HH:mm:ss"),
                 lastUpdatedDate: moment(new Date()).format("DD/MM/YYYY HH:mm:ss"),
                 userId: req.body.user_id,
@@ -107,8 +107,8 @@ router.post("/UpdateThread", async (req, res) => {
                 artistTag = await data.artists.GetArtistsById(artistTag);
             }
             let threadData = {
-                title: req.body.title,
-                comment: (req.body.comment) ? req.body.comment : "",
+                title: xss(req.body.title),
+                comment: (xss(req.body.comment)) ? xss(req.body.comment) : "",
                 // media: (req.body.media) ? req.body.media : "",
                 lastUpdatedDate: moment(new Date()).format("DD/MM/YYYY HH:mm:ss"),
                 genres: genreTag.genreName,
@@ -229,7 +229,7 @@ router.post("/AddSubThread/:is_homepage", async (req, res) => {
                 userId: req.body.user_id,
                 createdDate: moment(new Date()).format("DD/MM/YYYY HH:mm:ss"),
                 lastUpdatedDate: moment(new Date()).format("DD/MM/YYYY HH:mm:ss"),
-                comment: req.body.comment
+                comment: xss(req.body.comment)
             }
             let insertThread = await data.threads.CreateSubThread(sub_thread_data);
             if (req.params.is_homepage == 1) {

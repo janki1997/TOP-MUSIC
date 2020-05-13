@@ -4,6 +4,8 @@ const data = require('../data');
 const uuid = require('uuid');
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
+const xss = require('xss');
+
 
 //Register Page
 router.get('/signUpPage', async (req, res) => {
@@ -35,9 +37,9 @@ router.post("/registration", async (req, res) => {
         } else {
             let userData = {
                 _id: uuid.v4(),
-                fullName: req.body.full_name,
-                emailAddress: req.body.email_address.toLowerCase(),
-                password: data.encryption.encrypt(req.body.password),
+                fullName: xss(req.body.full_name),
+                emailAddress: xss(req.body.email_address).toLowerCase(),
+                password: data.encryption.encrypt(xss(req.body.password)),
                 genres: req.body.genres_ids,  // should be array
                 artist: req.body.artist_ids, // should by array
                 createDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
@@ -60,7 +62,7 @@ router.post("/registration", async (req, res) => {
                 await data.genres.incrementCountById(userData.artist);
             }
 
-            let checkUser = await data.users.CheckUserExist(req.body.email_address.toLowerCase());
+            let checkUser = await data.users.CheckUserExist(xss(req.body.email_address).toLowerCase());
             if (checkUser == null) {
                 let AddUser = await data.users.CreateUser(userData);
                 // res.json(AddUser)
@@ -76,12 +78,12 @@ router.post("/registration", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     try {
-        var userData = await data.users.CheckUserExist(req.body.email_address.toLowerCase());
+        var userData = await data.users.CheckUserExist(xss(req.body.email_address.toLowerCase()));
         if (userData == null) {
             res.status(401).render("profile/login", { layout: "main", error_message: "Incorrect email address/password." });
         } else {
             let password = data.encryption.decrypt(userData.password);
-            if (password == req.body.password) {
+            if (password == xss(req.body.password)) {
                 req.session.auth = jwt.sign({ userid: userData._id }, 'secret');
                 let getThreadData = await data.threads.GetAllThreads();
                 let thread_ids = getThreadData.map(x => x._id);
@@ -183,11 +185,11 @@ router.post("/forgetPassword", async (req, res) => {
     if (!req.body.email_address) {
         res.status(401).render("profile/forgetPassword", { layout: "main", error: "Please provide email address" });
     } else {
-        var userData = await data.users.CheckUserExist(req.body.email_address);
+        var userData = await data.users.CheckUserExist(xss(req.body.email_address));
         if (userData == null) {
             res.status(401).render("profile/forgetPassword", { layout: "main", error: "Email address is not valid" });
         } else {
-            res.status(401).render("profile/forgetPassword", { layout: "main", email_data: req.body.email_address, user_id: userData._id });
+            res.status(401).render("profile/forgetPassword", { layout: "main", email_data: xss(req.body.email_address), user_id: userData._id });
         }
     }
 });
@@ -195,10 +197,10 @@ router.post("/forgetPassword", async (req, res) => {
 router.post("/changePassword", async (req, res) => {
     try {
         if (!req.body.new_password) {
-            res.status(401).render("profile/forgetPassword", { layout: "main", error: "Please provide new password.", email_data: req.body.email_address });
+            res.status(401).render("profile/forgetPassword", { layout: "main", error: "Please provide new password.", email_data: xss(req.body.email_address) });
         } else {
-            let password = data.encryption.encrypt(req.body.new_password)
-            var userData = await data.users.updatePassword(req.body.user_id, password);
+            let password = data.encryption.encrypt(xss(req.body.new_password))
+            var userData = await data.users.updatePassword(xss(req.body.user_id), password);
             if (userData == null) {
                 res.render("profile/forgetPassword", { layout: "main", error: "Email address is not valid" });
             } else {

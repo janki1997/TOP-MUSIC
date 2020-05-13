@@ -8,6 +8,7 @@ const threads = require("./threads");
 const users = require("./users");
 const jwt = require('jsonwebtoken');
 const uuid = require("uuid/v4");
+const xss = require('xss');
 
 const accessRoutes = require("./access");
 const privateRoutes = require("./private");
@@ -82,7 +83,7 @@ module.exports = app => {
   });
 
   app.post("/", async (req, res) => {
-    let input = req.body.dropdown;
+    let input = xss(req.body.dropdown);
     let user_id = "", getLikeData =[];
     if (req.session.auth) {
       user_id = await jwt.verify(req.session.auth, 'secret').userid;
