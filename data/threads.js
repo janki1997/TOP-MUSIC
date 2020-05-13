@@ -202,13 +202,13 @@ let exportedMethods = {
             const threadCollection = await threads();
             let sort;
             if (input == 'artist') {
-                sort = await threadCollection.find({}).sort({ 'artists.artistName': 1, createdDate: -1 }).toArray();
+                sort = await threadCollection.find({}).sort({ artist: 1, createdDate: -1 }).toArray();
             } else if (input == 'comments') {
                 sort = await threadCollection.find({}).sort({ commentCount: -1, createdDate: -1 }).toArray();
             } else if (input == 'date') {
                 sort = await threadCollection.find({}).sort({ createdDate: 1 }).toArray();
             } else if (input == 'genre') {
-                sort = await threadCollection.find({}).sort({ genre: -1, createdDate: -1 }).toArray();
+                sort = await threadCollection.find({}).sort({ genres: 1, createdDate: -1 }).toArray();
             } else {
                 sort = await threadCollection.find({}).sort({ likeCount: -1, createdDate: -1 }).toArray();
             }

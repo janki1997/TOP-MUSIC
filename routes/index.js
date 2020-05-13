@@ -36,14 +36,6 @@ module.exports = app => {
     }
     
     getThreadData.forEach(async (element) => {
-      if (element.genres != ""){
-        let genre_tag = await data.genres.GetGenresById(element.genres);
-        element.genres = genre_tag.genreName;
-      }
-      if (element.artist != ""){
-          let artist_tag = await data.artists.GetArtistsById(element.artist);
-          element.artist = artist_tag.artistName;
-      }
       getLikeData.forEach(lelement => {
         if (user_id && element._id == lelement.threadId && element.userId == user_id) {
           element["userlike"] = 1
@@ -94,14 +86,6 @@ module.exports = app => {
       getLikeData = await data.threads.getThreadLikeWise(thread_ids, user_id);
      }
     sorted.forEach(async (element) => {
-      if (element.genres != ""){
-        let genre_tag = await data.genres.GetGenresById(element.genres);
-        element.genres = genre_tag.genreName;
-      }
-      if (element.artist != ""){
-          let artist_tag = await data.artists.GetArtistsById(element.artist);
-          element.artist = artist_tag.artistName;
-      }
       getLikeData.forEach(lelement => {
         if (user_id && element._id == lelement.threadId && element.userId == user_id) {
           element["userlike"] = 1

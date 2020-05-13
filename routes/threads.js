@@ -12,6 +12,14 @@ router.post("/createNewThread", async (req, res) => {
         } else if (!req.body.user_id) {
             res.render("threads/myThread", { layout: "main", error_message: "Please provide user information." })
         } else {
+            let genreTag = req.body.genres_ids;
+            let artistTag = req.body.artist_ids;
+            if (genreTag != "") {
+                genreTag = await data.genres.GetGenresById(genreTag);
+            }
+            if (artistTag != "") {
+                artistTag = await data.artists.GetArtistsById(artistTag);
+            }
             let threadData = {
                 _id: uuid.v4(),
                 title: req.body.title,
@@ -21,8 +29,8 @@ router.post("/createNewThread", async (req, res) => {
                 userId: req.body.user_id,
                 likeCount: 0,
                 commentCount: 0,
-                genres: req.body.genres_ids,
-                artist: req.body.artist_ids
+                genres: genreTag.genreName,
+                artist: artistTag.artistName
             }
 
             let insertThread = await data.threads.AddThread(threadData);
@@ -33,7 +41,7 @@ router.post("/createNewThread", async (req, res) => {
             let getLikeData = await data.threads.getThreadLikeWise(thread_ids, req.body.user_id);
             let artist_data = await data.artists.GetAllArtists();
             let genre_data = await data.genres.GetAllGenres();
-            getThreadData.forEach(element => {
+            getThreadData.forEach(async (element) => {
                 getLikeData.forEach(lelement => {
                     if (element._id == lelement.threadId && element.userId == req.body.user_id) {
                         element["userlike"] = 1
@@ -45,21 +53,10 @@ router.post("/createNewThread", async (req, res) => {
                         element["subThread"].push(selement)
                     }
                 });
-            })
-            getThreadData.forEach( async (element) => {
+            });
+            getThreadData.forEach(element => {
                 element["fullName"] = user_data.fullName;
                 element["profileLogo"] = user_data.profileLogo;
-                
-                // if (element.genres != ""){
-                //     let genre_tag = await data.genres.GetGenresById(element.genres);
-                //     element.genres = genre_tag.genreName;
-                // }
-                // if (element.artist != ""){
-                //     let artist_tag = await data.artists.GetArtistsById(element.artist);
-                //     element.artist = artist_tag.artistName;
-                // }
-                
-                   
             });
             
             res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.body.user_id, artist_data: artist_data, genre_data: genre_data })
@@ -101,13 +98,21 @@ router.post("/UpdateThread", async (req, res) => {
         } else if (!req.body.user_id) {
             res.render("threads/myThread", { layout: "main", error_message: "Please provide user information." })
         } else {
+            let genreTag = req.body.genres_ids;
+            let artistTag = req.body.artist_ids;
+            if (genreTag != "") {
+                genreTag = await data.genres.GetGenresById(genreTag);
+            }
+            if (artistTag != "") {
+                artistTag = await data.artists.GetArtistsById(artistTag);
+            }
             let threadData = {
                 title: req.body.title,
                 comment: (req.body.comment) ? req.body.comment : "",
                 // media: (req.body.media) ? req.body.media : "",
                 lastUpdatedDate: moment(new Date()).format("DD/MM/YYYY HH:mm:ss"),
-                genres: req.body.genres_ids,
-                artist: req.body.artist_ids
+                genres: genreTag.genreName,
+                artist: artistTag.artistName
             }
             
             let updateThread = await data.threads.UpdateThread(threadData, req.body.thread_id);
@@ -120,23 +125,6 @@ router.post("/UpdateThread", async (req, res) => {
             let genre_data = await data.genres.GetAllGenres();
 
             getThreadData.forEach(async (element) => {
-                if (element.genres != ""){
-                    let genre_tag = await data.genres.GetGenresById(element.genres);
-                    element.genres = genre_tag.genreName;
-                }
-                if (element.artist != ""){
-                    let artist_tag = await data.artists.GetArtistsById(element.artist);
-                    console.log(artist_tag.artistName)
-                    element.artist = artist_tag.artistName;
-                }
-                    
-                // } else if (element.genres != "") {
-                //     let genre_tag = await data.genres.GetGenresById(element.genres);
-                //     element.genres = genre_tag.genreName;
-                // } else {
-                //     let artist_tag = await data.artists.GetArtistsById(element.artist);
-                //     element.artist = artist_tag.artistName;
-                // }
                 
                 getLikeData.forEach(lelement => {
                     if (element._id == lelement.threadId && element.userId == req.body.user_id) {
@@ -204,15 +192,6 @@ router.get("/UserThread", async (req, res) => {
         let getsubThreadData = await data.threads.GetSubThread(thread_ids);
         let getLikeData = await data.threads.getThreadLikeWise(thread_ids, user_id);
         getThreadData.forEach(async (element) => {
-            if (element.genres != ""){
-                let genre_tag = await data.genres.GetGenresById(element.genres);
-                element.genres = genre_tag.genreName;
-            }
-            if (element.artist != ""){
-                let artist_tag = await data.artists.GetArtistsById(element.artist);
-                
-                element.artist = artist_tag.artistName;
-            }
             getLikeData.forEach(lelement => {
                 if (element._id == lelement.threadId && element.userId == user_id) {
                     element["userlike"] = 1
