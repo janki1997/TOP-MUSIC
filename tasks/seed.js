@@ -143,6 +143,13 @@ async function AddDataToDatabase() {
             genres: ["Hip-Hop"]
         }, {
             _id: uuid.v4(),
+            artistName: "Mac Miller",
+            profileLogo: "",
+            createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+            isDeleted: 0,
+            genres: ["Hip-Hop"]
+        }, {
+            _id: uuid.v4(),
             artistName: "Elvis Costello",
             profileLogo: "Elvis_Costello.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
