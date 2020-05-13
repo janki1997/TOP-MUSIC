@@ -30,6 +30,13 @@ let exportedMethods = {
             throw new Error(e.message)
         }
     },
+    async incrementCountById(id){
+        if (id === undefined) return Promise.reject('No id provided');
+        const artistCollection = await artists();
+        // Can increment positively or negatively by any value
+        return artistCollection
+          .updateOne({ _id: id }, { $inc: { count: 1 } })
+    },
     async  AddArtists(artistData) {
         try {
             let artistsCollection = await artists();

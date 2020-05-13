@@ -13,38 +13,93 @@ async function AddDataToDatabase() {
             genreName: "Jazz",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            count: 0
+            count: 2
         }, {
             _id: uuid.v4(),
             genreName: "Rock",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            count: 0
+            count: 1
         }, {
             _id: uuid.v4(),
             genreName: "Pop",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            count: 0
+            count: 4
         }, {
             _id: uuid.v4(),
             genreName: "Hip-Hop",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            count: 0
+            count: 3
         }, {
             _id: uuid.v4(),
             genreName: "Folk",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            count: 0
+            count: 5
         }, {
             _id: uuid.v4(),
             genreName: "Classic",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
+            count: 6
+        }, {
+            _id: uuid.v4(),
+            genreName: "Reggae",
+            createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+            isDeleted: 0,
+            count: 7
+        }, {
+            _id: uuid.v4(),
+            genreName: "KPop",
+            createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+            isDeleted: 0,
+            count: 8
+        }, {
+            _id: uuid.v4(),
+            genreName: "Grunge",
+            createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+            isDeleted: 0,
+            count: 9
+        }, {
+            _id: uuid.v4(),
+            genreName: "Country",
+            createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+            isDeleted: 0,
+            count: 0
+        }, {
+            _id: uuid.v4(),
+            genreName: "Ska",
+            createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+            isDeleted: 0,
+            count: 0
+        }, {
+            _id: uuid.v4(),
+            genreName: "LoFi",
+            createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+            isDeleted: 0,
+            count: 0
+        }, {
+            _id: uuid.v4(),
+            genreName: "Punk",
+            createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+            isDeleted: 0,
+            count: 0
+        }, {
+            _id: uuid.v4(),
+            genreName: "EDM",
+            createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+            isDeleted: 0,
+            count: 0
+        }, {
+            _id: uuid.v4(),
+            genreName: "Indie",
+            createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
+            isDeleted: 0,
             count: 0
         }];
+
 
         var insertGenre = await data.genres.AddGenres(genres_array);
         var getGenreData = await data.genres.GetAllGenres();
@@ -80,7 +135,7 @@ async function AddDataToDatabase() {
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
             genres: ["Pop"],
-            count: 0
+            count: 5
         }, {
             _id: uuid.v4(),
             artistName: "Alicia Keys",
@@ -88,7 +143,7 @@ async function AddDataToDatabase() {
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
             genres: ["Hip-Hop", "Pop"],
-            count: 0
+            count: 6
         }, {
             _id: uuid.v4(),
             artistName: "David Bowie",
@@ -96,7 +151,7 @@ async function AddDataToDatabase() {
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
             genres: ["Rock", "Pop"],
-            count: 0
+            count: 3
         }, {
             _id: uuid.v4(),
             artistName: "Madonna",
@@ -104,7 +159,7 @@ async function AddDataToDatabase() {
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
             genres: ["Pop"],
-            count: 0
+            count: 2
         }, {
             _id: uuid.v4(),
             artistName: "Young Jeezy",
@@ -120,7 +175,7 @@ async function AddDataToDatabase() {
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
             genres: ["Rock", "Jazz", "Classic"],
-            count: 0
+            count: 4
         }, {
             _id: uuid.v4(),
             artistName: "Lana Del Rey",
@@ -128,7 +183,7 @@ async function AddDataToDatabase() {
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
             genres: ["Pop", "Rock"],
-            count: 0
+            count: 3
         }, {
             _id: uuid.v4(),
             artistName: "Leon Russell",
@@ -136,7 +191,7 @@ async function AddDataToDatabase() {
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
             genres: ["Pop", "Rock", "Folk"],
-            count: 0
+            count: 1
         }, {
             _id: uuid.v4(),
             artistName: "Young Jeezy",
@@ -144,7 +199,7 @@ async function AddDataToDatabase() {
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
             genres: ["Hip-Hop"],
-            count: 0
+            count: 1
         }, {
             _id: uuid.v4(),
             artistName: "Frida Lyngstad",
@@ -152,7 +207,7 @@ async function AddDataToDatabase() {
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
             genres: ["Pop", "Jazz"],
-            count: 0
+            count: 7
         }, {
             _id: uuid.v4(),
             artistName: "Eric B. & Rakim",
@@ -160,7 +215,7 @@ async function AddDataToDatabase() {
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
             genres: ["Hip-Hop"],
-            count: 0
+            count: 5
         }, {
             _id: uuid.v4(),
             artistName: "Elvis Costello",
@@ -184,9 +239,17 @@ async function AddDataToDatabase() {
                 }
             });
         });
+
         var insertArtist = await data.artists.AddArtists(artist_array);
+        let top10A = await data.metrics.topTenArtists();
+        let top10G = await data.metrics.topTenGenres();
+        let top10AiG = await data.metrics.topTenArtistsInGenre();
+        console.log(top10A);
+        console.log(top10G);
+        console.log(top10AiG);
         console.log("genre and artist data inserted successfully");
         await db.serverConfig.close();
+
     }
     catch (e) {
         console.log(e.message)

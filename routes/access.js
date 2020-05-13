@@ -46,6 +46,12 @@ router.post("/registration", async (req, res) => {
                 lastUpdatedDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
                 profileLogo: req.body.profileLogo
             }
+            for (let i of userData.genres){
+                data.genres.incrementCountById(i);
+            }
+            for (let j of userData.artist){
+                data.artists.incrementCountById(j);
+            }
 
             let checkUser = await data.users.CheckUserExist(req.body.email_address);
             if (checkUser == null) {
