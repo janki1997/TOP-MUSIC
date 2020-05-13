@@ -36,7 +36,7 @@ router.post("/registration", async (req, res) => {
             let userData = {
                 _id: uuid.v4(),
                 fullName: req.body.full_name,
-                emailAddress: req.body.email_address,
+                emailAddress: req.body.email_address.toLowerCase(),
                 password: data.encryption.encrypt(req.body.password),
                 genres: req.body.genres_ids,  // should be array
                 artist: req.body.artist_ids, // should by array
@@ -60,11 +60,11 @@ router.post("/registration", async (req, res) => {
                 await data.genres.incrementCountById(userData.artist);
             }
 
-            let checkUser = await data.users.CheckUserExist(req.body.email_address);
+            let checkUser = await data.users.CheckUserExist(req.body.email_address.toLowerCase());
             if (checkUser == null) {
                 let AddUser = await data.users.CreateUser(userData);
                 // res.json(AddUser)
-                res.render("profile/login", { layout: "main" });
+                res.render("profile/login", { layout: "main", "success" : "You have registered successfully. Please Login!" });
             } else {
                 res.status(401).render("profile/signUpPage", { layout: "main", artist_data: artist_data, genre_data: genre_data, error_message: "Email Address already exist." });
             }
@@ -76,9 +76,9 @@ router.post("/registration", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     try {
-        var userData = await data.users.CheckUserExist(req.body.email_address);
+        var userData = await data.users.CheckUserExist(req.body.email_address.toLowerCase());
         if (userData == null) {
-            res.status(401).render("profile/login", { layout: "main", error_message: "Incorrect Username/password." });
+            res.status(401).render("profile/login", { layout: "main", error_message: "Incorrect email address/password." });
         } else {
             let password = data.encryption.decrypt(userData.password);
             if (password == req.body.password) {
@@ -87,6 +87,9 @@ router.post("/login", async (req, res) => {
                 let thread_ids = getThreadData.map(x => x._id);
                 let getLikeData = await data.threads.getThreadLikeWise(thread_ids, userData._id);
                 let getsubThreadData = await data.threads.GetSubThread(thread_ids);
+                let top_artist = await data.metrics.topTenArtists();
+                let top_genres = await data.metrics.topTenGenres();
+                let top_artist_by_genres = await data.metrics.topTenArtistsbyGenre();
                 getThreadData.forEach(async (element) => {
                     getLikeData.forEach(lelement => {
                         if (element._id == lelement.threadId && element.userId == userData._id) {
@@ -104,14 +107,20 @@ router.post("/login", async (req, res) => {
                     res.render("profile/homePage", {
                         auth: req.session.auth,
                         threadData: getThreadData,
-                        userID: userData._id
+                        userID: userData._id,
+                        top_artist : top_artist,
+                        top_genres : top_genres,
+                        top_artist_by_genres : top_artist_by_genres
                     });
                 } else {
                     res.render("profile/homePage", {
                         auth: req.session.auth,
                         threadData: getThreadData,
                         userID: userData._id,
-                        message: "Recently No Forum Post!"
+                        message: "Recently No Forum Post!",
+                        top_artist : top_artist,
+                        top_genres : top_genres,
+                        top_artist_by_genres : top_artist_by_genres
                     });
                 }
             } else {
@@ -138,13 +147,18 @@ router.get("/logout", async (req, res) => {
                 }
             });
         });
-        
+        let top_artist = await data.metrics.topTenArtists();
+        let top_genres = await data.metrics.topTenGenres();
+        let top_artist_by_genres = await data.metrics.topTenArtistsbyGenre();
         if (getThreadData.length) {
             res.render('profile/homePage', {
                 layout: "main",
                 title: "Top Music",
                 threadData: getThreadData,
-                auth: ""
+                auth: "",
+                top_artist : top_artist,
+                top_genres : top_genres,
+                top_artist_by_genres : top_artist_by_genres
             });
 
         } else {
@@ -154,7 +168,10 @@ router.get("/logout", async (req, res) => {
                 title: "Top Music",
                 threadData: getThreadData,
                 auth: "",
-                message: "Recently One Post any Forum. Please Login to post our forum first!"
+                message: "Recently One Post any Forum. Please Login to post our forum first!",
+                top_artist : top_artist,
+                top_genres : top_genres,
+                top_artist_by_genres : top_artist_by_genres
             });
         }
     } catch (e) {

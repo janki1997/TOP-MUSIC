@@ -3,9 +3,10 @@
  * ~
  */
 
-const auth = require("../auth");
-const cookies = require("../cookies");
+const accessRoutes = require("./access");
 const data = require("../data");
+const threads = require("./threads");
+const users = require("./users");
 const jwt = require('jsonwebtoken');
 const uuid = require("uuid/v4");
 
@@ -15,8 +16,9 @@ const threadRoutes = require("./threads");
 
 module.exports = app => {
   app.use("/access", accessRoutes);
-  app.use("/private", privateRoutes);
-  app.use("/thread", threadRoutes);
+  app.use("/thread", threads);
+  app.use("/users", users);
+
 
   app.get("/*.handlebars", async (req, res) => {
     let url = req.originalUrl;
@@ -49,14 +51,19 @@ module.exports = app => {
         }
       });
     });
-
+    let top_artist = await data.metrics.topTenArtists();
+    let top_genres = await data.metrics.topTenGenres();
+    let top_artist_by_genres = await data.metrics.topTenArtistsbyGenre();
     if (getThreadData.length) {
       res.render('profile/homePage', {
         layout: "main",
         title: "Top Music",
         threadData: getThreadData,
         auth: (req.session.auth) ? req.session.auth : "",
-        userID: user_id
+        userID: user_id,
+        top_artist : top_artist,
+        top_genres : top_genres,
+        top_artist_by_genres : top_artist_by_genres
       });
 
     } else {
@@ -66,8 +73,11 @@ module.exports = app => {
         title: "Top Music",
         threadData: getThreadData,
         auth: (req.session.auth) ? req.session.auth : "",
-        message: "Please login to join the discussion.",
-        userID: user_id
+        message: "Recently One Post any Forum. Please Login to post our forum first!",
+        userID: user_id,
+        top_artist : top_artist,
+        top_genres : top_genres,
+        top_artist_by_genres : top_artist_by_genres
       });
     }
   });
@@ -98,12 +108,18 @@ module.exports = app => {
         }
       });
     });
+    let top_artist = await data.metrics.topTenArtists();
+    let top_genres = await data.metrics.topTenGenres();
+    let top_artist_by_genres = await data.metrics.topTenArtistsbyGenre();
     res.render('profile/homePage', {
       layout: "main",
       title: "Top Music",
       threadData: sorted,
       auth: (req.session.auth) ? req.session.auth : "",
-      userID: user_id
+      userID: user_id,
+      top_artist : top_artist,
+      top_genres : top_genres,
+      top_artist_by_genres : top_artist_by_genres
     });
   });
 

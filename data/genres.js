@@ -22,23 +22,27 @@ let exportedMethods = {
   },
 
   async GetGenresById(id) {
-    try{
+    try {
       let genersCollection = await genres();
       let genre = await genersCollection.findOne({ _id: id });
-      if (!genre) throw 'genre not found';
       return genre;
     }
-  catch (e) {
+    catch (e) {
       throw new Error(e.message)
     }
   },
-  async incrementCountById(id){
-    if (id === undefined) return Promise.reject('No id provided');
-    const genresCollection = await genres();
-    // Can increment positively or negatively by any value
-    return genresCollection
-      .updateOne({ _id: id }, { $inc: { count: 1 } })
-},
+  async incrementCountById(id) {
+    try {
+      if (id === undefined) return Promise.reject('No id provided');
+      const genresCollection = await genres();
+      // Can increment positively or negatively by any value
+      return genresCollection
+        .updateOne({ _id: id }, { $inc: { count: 1 } });
+    }
+    catch (e) {
+      throw new Error(e.message)
+    }
+  },
 
   async AddGenres(genreData) {
     try {
