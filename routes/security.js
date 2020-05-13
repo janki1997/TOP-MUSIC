@@ -22,9 +22,9 @@ async function CheckAuthencation(req, callback) {
     });
 
     if(return_data.length){
-        callback({"res" : 0, "msg" : "success"})
+        callback({"res" : 0, "msg" : "success"});
     }else{
-        callback({"res" : 1, "msg" : "User not authorize"})
+        callback({"res" : 1, "msg" : "User not authorized"});
     }
 }
 

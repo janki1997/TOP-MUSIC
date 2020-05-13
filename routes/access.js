@@ -11,7 +11,6 @@ router.get('/signUpPage', async (req, res) => {
         let artist_data = await data.artists.GetAllArtists();
         let genre_data = await data.genres.GetAllGenres();
         res.render("profile/signUpPage", { layout: "main", artist_data: artist_data, genre_data: genre_data });
-
     } catch (e) {
         res.status(401).redirect('/');
     }
@@ -64,9 +63,9 @@ router.post("/registration", async (req, res) => {
             if (checkUser == null) {
                 let AddUser = await data.users.CreateUser(userData);
                 // res.json(AddUser)
-                res.render("profile/login", { layout: "main", "success" : "You have registered successfully. Please Login!" });
+                res.render("profile/login", { layout: "main", "success" : "You have successfully registered. Please login!" });
             } else {
-                res.status(401).render("profile/signUpPage", { layout: "main", artist_data: artist_data, genre_data: genre_data, error_message: "Email Address already exist." });
+                res.status(401).render("profile/signUpPage", { layout: "main", artist_data: artist_data, genre_data: genre_data, error_message: "Email address already exists." });
             }
         }
     } catch (e) {
@@ -93,13 +92,13 @@ router.post("/login", async (req, res) => {
                 getThreadData.forEach(async (element) => {
                     getLikeData.forEach(lelement => {
                         if (element._id == lelement.threadId && element.userId == userData._id) {
-                            element["userlike"] = 1
+                            element["userlike"] = 1;
                         }
                     });
                     element["subThread"] = [];
                     getsubThreadData.forEach(selement => {
                         if (element._id == selement.threadId) {
-                            element["subThread"].push(selement)
+                            element["subThread"].push(selement);
                         }
                     });
                 })
@@ -143,7 +142,7 @@ router.get("/logout", async (req, res) => {
             element["subThread"] = [];
             getsubThreadData.forEach(selement => {
                 if (element._id == selement.threadId) {
-                    element["subThread"].push(selement)
+                    element["subThread"].push(selement);
                 }
             });
         });
@@ -160,9 +159,7 @@ router.get("/logout", async (req, res) => {
                 top_genres : top_genres,
                 top_artist_by_genres : top_artist_by_genres
             });
-
         } else {
-
             res.render('profile/homePage', {
                 layout: "main",
                 title: "Top Music",
@@ -197,7 +194,7 @@ router.post("/changePassword", async (req, res) => {
         if (!req.body.new_password) {
             res.status(401).render("profile/forgetPassword", { layout: "main", error: "Please provide new password.", email_data: req.body.email_address });
         } else {
-            let password = data.encryption.encrypt(req.body.new_password)
+            let password = data.encryption.encrypt(req.body.new_password);
             var userData = await data.users.updatePassword(req.body.user_id, password);
             if (userData == null) {
                 res.render("profile/forgetPassword", { layout: "main", error: "Email address is not valid" });

@@ -46,7 +46,7 @@ app.all('/*', function (req, res, next) {
       if (val.res == 0) {
         next();
       } else {
-        res.redirect("/")
+        res.redirect("/");
       }
     });
   }

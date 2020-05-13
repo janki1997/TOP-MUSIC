@@ -19,7 +19,7 @@ router.get("/userProfile", async (req, res) => {
 
            user_data.genres.forEach(gelement=>{
              if(element._id == gelement){
-               element["selected"] = 1
+               element["selected"] = 1;
              }
            });
          }
@@ -30,7 +30,7 @@ router.get("/userProfile", async (req, res) => {
 
           user_data.artist.forEach(gelement=>{
             if(element._id == gelement){
-              element["selected"] = 1
+              element["selected"] = 1;
             }
           });
         }
@@ -67,7 +67,7 @@ router.post("/profileUpdate", async (req, res) => {
       contactNo: req.body.contact
     };
     let update_user_data = await data.users.updateUserProfile(update_data, user_id);
-    res.json({"msg":"success"})
+    res.json({"msg":"success"});
   } catch (e) {
     res.redirect('/');
   }

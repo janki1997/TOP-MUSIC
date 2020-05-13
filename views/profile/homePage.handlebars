@@ -19,7 +19,7 @@
                     {{inc @index}}.
                        <img src="/public/images/{{this.profileLogo}}"
                             class="rounded-circle mr-2 ml-2 d-block w-20 artist-images" alt="img"> {{this.artistName }}<br />
-                        Genres: {{this.genreName }}
+                        Genre: {{this.genreName }}
                     </li>
                     {{/each}}
                 </ul>
@@ -32,6 +32,7 @@
         </div>
         {{else}}
         <div class="col-6">
+            <h2>Music Forum</h2>
             <form id="sort" method="POST" action="/" name="sort">
                 <label for="dropdown">Sort By:</label>
                 <select id="dropdown" name="dropdown">
@@ -136,7 +137,7 @@
 
         <div class="col-3">
             <div class="card top-genres">
-                <h5 class="card-title text-center">Top Artist</h5>
+                <h5 class="card-title text-center">Top Artists</h5>
                 <ul class="list-group list-group-flush">
                     {{#each top_artist}}
                     <li class="list-group-item d-flex">

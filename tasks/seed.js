@@ -1,5 +1,5 @@
 var dbConnection = require('../config/mongoConnection');
-var data = require("../data")
+var data = require("../data");
 var moment = require('moment');
 var uuid = require('uuid');
 
@@ -240,7 +240,7 @@ async function AddDataToDatabase() {
                         if (dt == ele2.genreName) {
                             return dt = ele2._id;
                         } else {
-                            return dt
+                            return dt;
                         }
                     });
                 }
@@ -257,11 +257,9 @@ async function AddDataToDatabase() {
         console.log("genre and artist data inserted successfully");
         await db.serverConfig.close();
 
-    }
-    catch (e) {
-        console.log(e.message)
+    } catch (e) {
+        console.log(e.message);
     }
 }
-
 
 AddDataToDatabase();

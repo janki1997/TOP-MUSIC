@@ -39,13 +39,13 @@ module.exports = app => {
     getThreadData.forEach(element => {
       getLikeData.forEach(lelement => {
         if (user_id && element._id == lelement.threadId && element.userId == user_id) {
-          element["userlike"] = 1
+          element["userlike"] = 1;
         }
       });
       element["subThread"] = [];
       getsubThreadData.forEach(selement => {
         if (element._id == selement.threadId) {
-          element["subThread"].push(selement)
+          element["subThread"].push(selement);
         }
       });
     });
@@ -63,9 +63,7 @@ module.exports = app => {
         top_genres : top_genres,
         top_artist_by_genres : top_artist_by_genres
       });
-
     } else {
-
       res.render('profile/homePage', {
         layout: "main",
         title: "Top Music",
@@ -96,13 +94,13 @@ module.exports = app => {
     sorted.forEach(async (element) => {
       getLikeData.forEach(lelement => {
         if (user_id && element._id == lelement.threadId && element.userId == user_id) {
-          element["userlike"] = 1
+          element["userlike"] = 1;
         }
       });
       element["subThread"] = [];
       getsubThreadData.forEach(selement => {
         if (element._id == selement.threadId) {
-          element["subThread"].push(selement)
+          element["subThread"].push(selement);
         }
       });
     });
