@@ -11,7 +11,6 @@ const uuid = require("uuid/v4");
 const xss = require('xss');
 
 const accessRoutes = require("./access");
-const privateRoutes = require("./private");
 const threadRoutes = require("./threads");
 
 module.exports = app => {
