@@ -4,14 +4,10 @@
  */
 
 const auth = require("../auth");
-<<<<<<< Updated upstream
-const accessRoutes = require("./access");
 const cookies = require("../cookies");
-const uuid = require("uuid/v4");
-=======
 const data = require("../data");
 const jwt = require('jsonwebtoken');
->>>>>>> Stashed changes
+const uuid = require("uuid/v4");
 
 const accessRoutes = require("./access");
 const privateRoutes = require("./private");
@@ -19,13 +15,8 @@ const threadRoutes = require("./threads");
 
 module.exports = app => {
   app.use("/access", accessRoutes);
-<<<<<<< Updated upstream
-
-  app.use("/", async(req, res) => {
-=======
   app.use("/private", privateRoutes);
   app.use("/thread", threadRoutes);
-
 
   app.get("/*.handlebars", async (req, res) => {
     let url = req.originalUrl;
@@ -107,7 +98,6 @@ module.exports = app => {
         }
       });
     });
->>>>>>> Stashed changes
     res.render('profile/homePage', {
      layout : "main",
      title : "Top Artist Website"

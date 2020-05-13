@@ -39,7 +39,7 @@ app.use(function (req, res, next) {
       if (val.res == 0) {
         next();
       } else {
-        res.render("/layouts/home")
+        res.render("/layouts/main")
       }
     });
   }
