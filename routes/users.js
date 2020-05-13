@@ -57,8 +57,8 @@ router.post("/profileUpdate", async (req, res) => {
   try {
     let user_id = await jwt.verify(req.session.auth, 'secret').userid;
     let update_data = {
-      fullName: req.body.full_name,
-      password: data.encryption.encrypt(req.body.password),
+      fullName: xss(req.body.full_name),
+      password: data.encryption.encrypt(xss(req.body.password)),
       genres: (req.body.genres_ids) ? req.body.genres_ids : [],
       artist: (req.body.artist_ids) ? req.body.artist_ids : [],
       isDeleted: 0,
