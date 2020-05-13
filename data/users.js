@@ -73,13 +73,24 @@ async function updateUserProfile(user_data, id) {
     catch (e) {
         throw new Error(e.message)
     }
-}
+};
 
+async function deleteUSer(user_id){
+    try {
+        let userCollection = await users();
+        let user = await userCollection.updateOne({ _id: user_id }, { $set: {isDeleted : 1} });
+        return true;
+    }
+    catch (e) {
+        throw new Error(e.message)
+    }
+}
 module.exports = {
     CreateUser,
     GetAllUsers,
     GetUserById,
     CheckUserExist,
     updatePassword,
-    updateUserProfile
+    updateUserProfile,
+    deleteUSer
 }

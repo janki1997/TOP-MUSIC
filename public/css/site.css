@@ -86,7 +86,12 @@ footer {
 .multiselect-selected-text{
   float: left;
 }
-
+.btn-group{
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    text-align: left;
+}
 .dropdown-toggle::after {
     float: right;
     margin-top: 10px;
@@ -140,4 +145,11 @@ h5.card-title.text-center{
 
 .multiselect.btn {
   background-color: #ffffff;
+}
+
+.anchor {
+  color: #007bff !important;
+    text-decoration: none !important;
+    background-color: transparent !important;
+    cursor: pointer !important;
 }

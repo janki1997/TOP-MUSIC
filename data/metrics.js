@@ -60,7 +60,6 @@ let exportedMethods = {
                 }
 
             }
-            console.log(obj)
             return obj;
         } catch (e) {
             throw new Error(e.message)
@@ -99,7 +98,6 @@ let exportedMethods = {
                 }
 
             }
-            console.log(obj)
             obj = obj.filter(dt=>{
                 if(!dt.artistName){
                     return false;
@@ -107,7 +105,6 @@ let exportedMethods = {
                     return true
                 }
             });
-            console.log(obj)
             return obj;
         } catch (e) {
             throw new Error(e.message)
