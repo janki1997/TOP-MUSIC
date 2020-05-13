@@ -7,18 +7,25 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const exphbs = require("express-handlebars");
-const session = require("express-session");
+const session = require('express-session');
 const securityFile = require("./routes/security.js");
-const awesome = 'YEA!';
-
 const app = express();
+const static = express.static(__dirname + '/public');
+const configRoutes = require('./routes');
 const port = 3000;
 
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(express.static(__dirname + "public"));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use('/public', static);
+app.use(static);
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+
+app.engine("handlebars", exphbs({ 
+  defaultLayout: "main",
+  extname: '.handlebars',
+  helpers: require("./public/javascript/helper.js").helpers,extname: 'handlebars'
+}));
+
 app.set("view engine", "handlebars");
 
 app.use(session({
@@ -28,22 +35,23 @@ app.use(session({
   saveUninitialized: false
 }));
 
-require("./routes")(app);
 
-app.use(function (req, res, next) {
-
-  if (req.session.auth) {
+app.all('/*', function (req, res, next) {
+  
+  if (req.session.auth || req.originalUrl === "/") {
     next();
   } else {
     securityFile(req, val => {
       if (val.res == 0) {
         next();
       } else {
-        res.render("/layouts/main")
+        res.redirect("/")
       }
     });
   }
 });
+
+configRoutes(app);
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}...`);
