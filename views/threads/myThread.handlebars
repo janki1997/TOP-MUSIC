@@ -44,7 +44,7 @@
                     <div>
                         <i class="fas fa-pencil-alt mr-1"
                             onclick="editThread('{{this.comment}}', '{{this.title}}', '{{this._id}}' )"></i>
-                        <a href="/thread/DeleteThread/{{this._id}}/{{../userID}}"> <i class="fas fa-trash mr-1"></i></a>
+                        <a href="/thread/DeleteThread/{{this._id}}"> <i class="fas fa-trash mr-1"></i></a>
                     </div>
                 </div>
 
@@ -100,7 +100,7 @@
                             </div>
                             <div>
                                 <small>{{this.createdDate}}</small>
-                                <a href= "/thread/DeleteSubThread/{{this._id}}/{{../../userID}}" ><i class="fas fa-trash mr-1"></i> </a>
+                                <a href= "/thread/DeleteSubThread/{{this._id}}" ><i class="fas fa-trash mr-1"></i> </a>
                             </div>
                         </div>
                         <div class="p-2">
