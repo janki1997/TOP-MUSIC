@@ -32,6 +32,13 @@ let exportedMethods = {
       throw new Error(e.message)
     }
   },
+  async incrementCountById(id){
+    if (id === undefined) return Promise.reject('No id provided');
+    const genresCollection = await genres();
+    // Can increment positively or negatively by any value
+    return genresCollection
+      .updateOne({ _id: id }, { $inc: { count: 1 } })
+},
 
   async AddGenres(genreData) {
     try {

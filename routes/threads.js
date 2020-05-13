@@ -50,19 +50,14 @@ router.post("/createNewThread", async (req, res) => {
                 element["fullName"] = user_data.fullName;
                 element["profileLogo"] = user_data.profileLogo;
                 
-                if (element.genres != "" && element.artist != ""){
-                    let genre_tag = await data.genres.GetGenresById(element.genres);
-                    let artist_tag = await data.artists.GetArtistsById(element.artist);
-                    element.artist = artist_tag.artistName;
-                    element.genres = genre_tag.genreName;
-                    
-                } else if (element.genres != "") {
-                    let genre_tag = await data.genres.GetGenresById(element.genres);
-                    element.genres = genre_tag.genreName;
-                } else {
-                    let artist_tag = await data.artists.GetArtistsById(element.artist);
-                    element.artist = artist_tag.artistName;
-                }
+                // if (element.genres != ""){
+                //     let genre_tag = await data.genres.GetGenresById(element.genres);
+                //     element.genres = genre_tag.genreName;
+                // }
+                // if (element.artist != ""){
+                //     let artist_tag = await data.artists.GetArtistsById(element.artist);
+                //     element.artist = artist_tag.artistName;
+                // }
                 
                    
             });
@@ -125,19 +120,23 @@ router.post("/UpdateThread", async (req, res) => {
             let genre_data = await data.genres.GetAllGenres();
 
             getThreadData.forEach(async (element) => {
-                if (element.genres != "" && element.artist != ""){
-                    let genre_tag = await data.genres.GetGenresById(element.genres);
-                    let artist_tag = await data.artists.GetArtistsById(element.artist);
-                    element.artist = artist_tag.artistName;
-                    element.genres = genre_tag.genreName;
-                    
-                } else if (element.genres != "") {
+                if (element.genres != ""){
                     let genre_tag = await data.genres.GetGenresById(element.genres);
                     element.genres = genre_tag.genreName;
-                } else {
+                }
+                if (element.artist != ""){
                     let artist_tag = await data.artists.GetArtistsById(element.artist);
+                    console.log(artist_tag.artistName)
                     element.artist = artist_tag.artistName;
                 }
+                    
+                // } else if (element.genres != "") {
+                //     let genre_tag = await data.genres.GetGenresById(element.genres);
+                //     element.genres = genre_tag.genreName;
+                // } else {
+                //     let artist_tag = await data.artists.GetArtistsById(element.artist);
+                //     element.artist = artist_tag.artistName;
+                // }
                 
                 getLikeData.forEach(lelement => {
                     if (element._id == lelement.threadId && element.userId == req.body.user_id) {
@@ -205,17 +204,13 @@ router.get("/UserThread", async (req, res) => {
         let getsubThreadData = await data.threads.GetSubThread(thread_ids);
         let getLikeData = await data.threads.getThreadLikeWise(thread_ids, user_id);
         getThreadData.forEach(async (element) => {
-            if (element.genres != "" && element.artist != ""){
+            if (element.genres != ""){
                 let genre_tag = await data.genres.GetGenresById(element.genres);
-                let artist_tag = await data.artists.GetArtistsById(element.artist);
-                element.artist = artist_tag.artistName;
                 element.genres = genre_tag.genreName;
+            }
+            if (element.artist != ""){
+                let artist_tag = await data.artists.GetArtistsById(element.artist);
                 
-            } else if (element.genres != "") {
-                let genre_tag = await data.genres.GetGenresById(element.genres);
-                element.genres = genre_tag.genreName;
-            } else {
-                let artist_tag = await data.artists.GetArtistsById(element.artist);
                 element.artist = artist_tag.artistName;
             }
             getLikeData.forEach(lelement => {

@@ -46,6 +46,12 @@ router.post("/registration", async (req, res) => {
                 lastUpdatedDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
                 profileLogo: req.body.profileLogo
             }
+            for (let i of userData.genres){
+                data.genres.incrementCountById(i);
+            }
+            for (let j of userData.artist){
+                data.artists.incrementCountById(j);
+            }
 
             let checkUser = await data.users.CheckUserExist(req.body.email_address);
             if (checkUser == null) {
@@ -75,16 +81,11 @@ router.post("/login", async (req, res) => {
                 let getLikeData = await data.threads.getThreadLikeWise(thread_ids, userData._id);
                 let getsubThreadData = await data.threads.GetSubThread(thread_ids);
                 getThreadData.forEach(async (element) => {
-                    if (element.genres != "" && element.artist != ""){
-                        let genre_tag = await data.genres.GetGenresById(element.genres);
-                        let artist_tag = await data.artists.GetArtistsById(element.artist);
-                        element.artist = artist_tag.artistName;
-                        element.genres = genre_tag.genreName;
-                        
-                    } else if (element.genres != "") {
+                    if (element.genres != ""){
                         let genre_tag = await data.genres.GetGenresById(element.genres);
                         element.genres = genre_tag.genreName;
-                    } else {
+                    }
+                    if (element.artist != ""){
                         let artist_tag = await data.artists.GetArtistsById(element.artist);
                         element.artist = artist_tag.artistName;
                     }
@@ -131,16 +132,11 @@ router.get("/logout", async (req, res) => {
         let getsubThreadData = await data.threads.GetSubThread(thread_ids);
  
         getThreadData.forEach(async (element) => {
-            if (element.genres != "" && element.artist != ""){
-                let genre_tag = await data.genres.GetGenresById(element.genres);
-                let artist_tag = await data.artists.GetArtistsById(element.artist);
-                element.artist = artist_tag.artistName;
-                element.genres = genre_tag.genreName;
-                
-            } else if (element.genres != "") {
+            if (element.genres != ""){
                 let genre_tag = await data.genres.GetGenresById(element.genres);
                 element.genres = genre_tag.genreName;
-            } else {
+            }
+            if (element.artist != ""){
                 let artist_tag = await data.artists.GetArtistsById(element.artist);
                 element.artist = artist_tag.artistName;
             }
