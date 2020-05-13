@@ -12,32 +12,38 @@ async function AddDataToDatabase() {
             _id: uuid.v4(),
             genreName: "Jazz",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
-            isDeleted: 0
+            isDeleted: 0,
+            count: 0
         }, {
             _id: uuid.v4(),
             genreName: "Rock",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
-            isDeleted: 0
+            isDeleted: 0,
+            count: 0
         }, {
             _id: uuid.v4(),
             genreName: "Pop",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
-            isDeleted: 0
+            isDeleted: 0,
+            count: 0
         }, {
             _id: uuid.v4(),
             genreName: "Hip-Hop",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
-            isDeleted: 0
+            isDeleted: 0,
+            count: 0
         }, {
             _id: uuid.v4(),
             genreName: "Folk",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
-            isDeleted: 0
+            isDeleted: 0,
+            count: 0
         }, {
             _id: uuid.v4(),
             genreName: "Classic",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
-            isDeleted: 0
+            isDeleted: 0,
+            count: 0
         }];
 
         var insertGenre = await data.genres.AddGenres(genres_array);
@@ -49,105 +55,120 @@ async function AddDataToDatabase() {
             profileLogo: "Astrud_Gilberto.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Jazz"]
+            genres: ["Jazz"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Audioslave",
             profileLogo: "Audioslave.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Rock"]
+            genres: ["Rock"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Bill Evans",
             profileLogo: "Bill_Evans.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Jazz"]
+            genres: ["Jazz"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Lady Gaga",
             profileLogo: "Lady_Gaga.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Pop"]
+            genres: ["Pop"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Alicia Keys",
             profileLogo: "Alicia_Keys.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Hip-Hop", "Pop"]
+            genres: ["Hip-Hop", "Pop"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "David Bowie",
             profileLogo: "David_Bowie.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Rock", "Pop"]
+            genres: ["Rock", "Pop"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Madonna",
             profileLogo: "Madonna.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Pop"]
+            genres: ["Pop"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Young Jeezy",
             profileLogo: "Young_Jeezy.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Hip-Hop"]
+            genres: ["Hip-Hop"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Frank Zappa",
             profileLogo: "Frank_Zappa.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Rock", "Jazz", "Classic"]
+            genres: ["Rock", "Jazz", "Classic"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Lana Del Rey",
             profileLogo: "Lana_Del_Rey.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Pop", "Rock"]
+            genres: ["Pop", "Rock"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Leon Russell",
             profileLogo: "Leon_Russell.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Pop", "Rock", "Folk"]
+            genres: ["Pop", "Rock", "Folk"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Young Jeezy",
             profileLogo: "Young_Jeezy.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Hip-Hop"]
+            genres: ["Hip-Hop"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Frida Lyngstad",
             profileLogo: "Frida_Lyngstad.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Pop", "Jazz"]
+            genres: ["Pop", "Jazz"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Eric B. & Rakim",
             profileLogo: "Eric_Rakim.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Hip-Hop"]
+            genres: ["Hip-Hop"],
+            count: 0
         }, {
             _id: uuid.v4(),
             artistName: "Elvis Costello",
             profileLogo: "Elvis_Costello.jpg",
             createdDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
             isDeleted: 0,
-            genres: ["Rock", "Pop"]
+            genres: ["Rock", "Pop"],
+            count: 0
         }];
 
         artist_array.forEach(ele1 => {

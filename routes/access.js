@@ -75,19 +75,6 @@ router.post("/login", async (req, res) => {
                 let getLikeData = await data.threads.getThreadLikeWise(thread_ids, userData._id);
                 let getsubThreadData = await data.threads.GetSubThread(thread_ids);
                 getThreadData.forEach(async (element) => {
-                    if (element.genres != "" && element.artist != ""){
-                        let genre_tag = await data.genres.GetGenresById(element.genres);
-                        let artist_tag = await data.artists.GetArtistsById(element.artist);
-                        element.artist = artist_tag.artistName;
-                        element.genres = genre_tag.genreName;
-                        
-                    } else if (element.genres != "") {
-                        let genre_tag = await data.genres.GetGenresById(element.genres);
-                        element.genres = genre_tag.genreName;
-                    } else {
-                        let artist_tag = await data.artists.GetArtistsById(element.artist);
-                        element.artist = artist_tag.artistName;
-                    }
                     getLikeData.forEach(lelement => {
                         if (element._id == lelement.threadId && element.userId == userData._id) {
                             element["userlike"] = 1
@@ -131,19 +118,6 @@ router.get("/logout", async (req, res) => {
         let getsubThreadData = await data.threads.GetSubThread(thread_ids);
  
         getThreadData.forEach(async (element) => {
-            if (element.genres != "" && element.artist != ""){
-                let genre_tag = await data.genres.GetGenresById(element.genres);
-                let artist_tag = await data.artists.GetArtistsById(element.artist);
-                element.artist = artist_tag.artistName;
-                element.genres = genre_tag.genreName;
-                
-            } else if (element.genres != "") {
-                let genre_tag = await data.genres.GetGenresById(element.genres);
-                element.genres = genre_tag.genreName;
-            } else {
-                let artist_tag = await data.artists.GetArtistsById(element.artist);
-                element.artist = artist_tag.artistName;
-            }
             element["subThread"] = [];
             getsubThreadData.forEach(selement => {
                 if (element._id == selement.threadId) {
