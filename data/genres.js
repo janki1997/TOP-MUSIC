@@ -4,8 +4,7 @@
  */
 
 const mongoCollections = require('../config/mongoCollections');
-const ObjectId = require('mongodb').ObjectId
-const artists = mongoCollections.artists;
+const ObjectId = require('mongodb').ObjectId;
 const genres = mongoCollections.genres;
 
 let exportedMethods = {
@@ -13,22 +12,20 @@ let exportedMethods = {
     try {
       let genresCollection = await genres();
       let genresList = await genresCollection.find({}).toArray();
-      if (!genresList.length) throw 'genre not found';
+      if (!genresList.length) throw 'There are no genres';
       return genresList;
-    }
-    catch (e) {
-      throw new Error(e.message)
+    } catch (e) {
+      throw new Error(e.message);
     }
   },
 
   async GetGenresById(id) {
     try {
-      let genersCollection = await genres();
-      let genre = await genersCollection.findOne({ _id: id });
+      let genresCollection = await genres();
+      let genre = await genresCollection.findOne({ _id: id });
       return genre;
-    }
-    catch (e) {
-      throw new Error(e.message)
+    } catch (e) {
+      throw new Error(e.message);
     }
   },
   async incrementCountById(id) {
@@ -38,9 +35,8 @@ let exportedMethods = {
       // Can increment positively or negatively by any value
       return genresCollection
         .updateOne({ _id: id }, { $inc: { count: 1 } });
-    }
-    catch (e) {
-      throw new Error(e.message)
+    } catch (e) {
+      throw new Error(e.message);
     }
   },
 
@@ -49,15 +45,14 @@ let exportedMethods = {
       let genresCollection = await genres();
       let insertGenres = await genresCollection.insertMany(genreData);
       return true;
-    }
-    catch (e) {
-      throw new Error(e.message)
+    } catch (e) {
+      throw new Error(e.message);
     }
   },
-  async removeGenre(input) {
+  async removeGenre(id) {
     try {
       if (id === undefined) return Promise.reject('No id provided');
-      let currentGenre = await this.getGenre(id);
+      let currentGenre = await this.GetGenresById(id);
       const genreCollection = await genres();
 
       const deletedInfo = await genreCollection.removeOne({ _id: ObjectId(id) });
@@ -67,32 +62,39 @@ let exportedMethods = {
         "deleted": true,
         "data": {
           "_id": currentGenre._id,
-          "genreName": currentGenre.genreName
+          "genreName": currentGenre.genreName,
+          "createdDate": currentGenre.createdDate,
+          "isDeleted": currentGenre.isDeleted,
+          "count": currentGenre.count
         }
       };
       return output;
-    }
-    catch (e) {
-      throw new Error(e.message)
+    } catch (e) {
+      throw new Error(e.message);
     }
   },
-  async updateGenre(id, genreName) {
+  async updateGenre(id, genreName, createdDate, isDeleted, count) {
     try {
       if (id === undefined) return Promise.reject('No id provided');
       if (genreName === undefined) return Promise.reject('No genre name provided');
+      if (createdDate === undefined) return Promise.reject('No creation date provided');
+      if (isDeleted === undefined) return Promise.reject('No deletion info provided');
+      if (count === undefined) return Promise.reject('No count provided');
       const genreCollection = await genres();
       // const userThatPosted = await users.getUserById(posterId);
-      let updatedGenre = { genreName: genreName };
+      let updatedGenre = { 
+        genreName: genreName,
+        createdDate: createdDate,
+        isDeleted: isDeleted,
+        count: count
+      };
       const updateInfo = await genreCollection.updateOne({ _id: ObjectId(id) }, { $set: updatedGenre });
       if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Update failed';
-      return this.getGenre(id);
+      return this.GetGenresById(id);
+    } catch (e) {
+      throw new Error(e.message);
     }
-    catch (e) {
-      throw new Error(e.message)
-    }
-  },
-
-
+  }
 };
 
 module.exports = exportedMethods;

@@ -8,7 +8,6 @@ const threads = mongoCollections.threads;
 const subThreads = mongoCollections.subThreads;
 const threadLikes = mongoCollections.threadLikes;
 const users = mongoCollections.users;
-const data = require('../data');
 const moment = require('moment');
 
 let exportedMethods = {
@@ -22,15 +21,14 @@ let exportedMethods = {
             threadList.forEach(element => {
                 userData.forEach(uelement => {
                     if (element.userId == uelement._id) {
-                        element["fullName"] = uelement.fullName,
-                            element["profileLogo"] = uelement.profileLogo
+                        element["fullName"] = uelement.fullName;
+                        element["profileLogo"] = uelement.profileLogo;
                     }
-                })
-            })
+                });
+            });
             return threadList;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
 
@@ -39,9 +37,8 @@ let exportedMethods = {
             let threadsCollection = await threads();
             await threadsCollection.insertOne(threadData);
             return true;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
 
@@ -52,9 +49,8 @@ let exportedMethods = {
                 { $query: { _id: id } }
             ).project({ _id: 1, title: 1, comment: 1, media: 1, likeCount: 1, commentCount: 1 }).toArray();
             return threadList;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
 
@@ -63,9 +59,8 @@ let exportedMethods = {
             let threadsCollection = await threads();
             let threadList = await threadsCollection.find({ $query: { userId: user_id } }).sort({ createdDate: -1 }).toArray();
             return threadList;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
 
@@ -74,9 +69,8 @@ let exportedMethods = {
             let likeCollection = await threadLikes();
             let likeData = await likeCollection.findOne({ userId: user_id, threadId: thread_id });
             return likeData;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
 
@@ -87,11 +81,10 @@ let exportedMethods = {
             let getThread = await this.GetThread(likeData.threadId);
             let threadsCollection = await threads();
             let count = (getThread.length && getThread[0].likeCount) ? getThread[0].likeCount + 1 : 1;
-            let updateLikeCount = threadsCollection.updateOne({ _id: likeData.threadId }, { $set: { likeCount: count } })
+            let updateLikeCount = await threadsCollection.updateOne({ _id: likeData.threadId }, { $set: { likeCount: count } });
             return count;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
 
@@ -104,12 +97,11 @@ let exportedMethods = {
             let count = 0;
             if (getThread.likeCount != 0) {
                 count = (getThread.length && getThread[0].likeCount) ? getThread[0].likeCount - 1 : 1;
-                let updateLikeCount = threadsCollection.updateOne({ _id: thread_id }, { $set: { likeCount: count } })
+                let updateLikeCount = threadsCollection.updateOne({ _id: thread_id }, { $set: { likeCount: count } });
             }
             return count;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
     async getThreadLikeWise(thread_id, user_id) {
@@ -117,9 +109,8 @@ let exportedMethods = {
             let likeCollection = await threadLikes();
             let likeData = await likeCollection.find({ $query: { userId: user_id, threadId: { $in: thread_id } } }).toArray();
             return likeData;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
 
@@ -128,9 +119,8 @@ let exportedMethods = {
             let threadsCollection = await threads();
             let updateLikeCount = await threadsCollection.updateOne({ _id: thread_id }, { $set: threadData });
             return true;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
     async DeleteThread(thread_id) {
@@ -142,9 +132,8 @@ let exportedMethods = {
             let likeCollection = await threadLikes();
             let removeLike = await likeCollection.deleteMany({ threadId: thread_id });
             return true;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
     async CreateSubThread(threadData) {
@@ -156,9 +145,8 @@ let exportedMethods = {
             let threadsCollection = await threads();
             let updateLikeCount = await threadsCollection.updateOne({ _id: threadData.threadId }, { $set: { commentCount: count } });
             return true;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
     async DeleteSubThread(sub_thread_id) {
@@ -171,9 +159,8 @@ let exportedMethods = {
             let count = (getThread[0].commentCount > 0) ? getThread[0].commentCount - 1 : 0;
             let updateLikeCount = await threadsCollection.updateOne({ _id: threadData[0].threadId }, { $set: { commentCount: count } });
             return true;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
     async GetSubThread(thread_ids) {
@@ -187,14 +174,14 @@ let exportedMethods = {
                 element["createdDate"] = moment(element.createdDate, "MM-DD-YYYY");
                 userData.forEach(uelement => {
                     if (element.userId == uelement._id) {
-                        element["fullName"] = uelement.fullName,
-                            element["profileLogo"] = uelement.profileLogo
+                        element["fullName"] = uelement.fullName;
+                        element["profileLogo"] = uelement.profileLogo;
                     }
                 });
             });
-            return subThreadList
+            return subThreadList;
         } catch (e) {
-            throw new Error(e.message)
+            throw new Error(e.message);
         }
     },
     async sortThreads(input) {
@@ -218,10 +205,10 @@ let exportedMethods = {
             sort.forEach(element => {
                 userData.forEach(uelement => {
                     if (element.userId == uelement._id) {
-                        element["fullName"] = uelement.fullName,
-                            element["profileLogo"] = uelement.profileLogo
+                        element["fullName"] = uelement.fullName;
+                        element["profileLogo"] = uelement.profileLogo;
                     }
-                })
+                });
             });
             return sort;
         } catch (e) {

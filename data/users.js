@@ -5,17 +5,14 @@
 
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
-const genres = mongoCollections.genres;
-const artists = mongoCollections.artists;
 
 async function GetUserById(id) {
     try {
         const userCollection = await users();
         const user = await userCollection.findOne({ _id: id });
         return user;
-    }
-    catch (e) {
-        throw new Error(e.message)
+    } catch (e) {
+        throw new Error(e.message);
     }
 };
 
@@ -25,9 +22,8 @@ async function CreateUser(userData) {
         let newInsertInfo = await userCollection.insertOne(userData);
         if (newInsertInfo.insertedCount === 0) throw 'Something went wrong.';
         return true;
-    }
-    catch (e) {
-        throw new Error(e.message)
+    } catch (e) {
+        throw new Error(e.message);
     }
 };
 async function CheckUserExist(emailAddress) {
@@ -35,9 +31,8 @@ async function CheckUserExist(emailAddress) {
         let userCollection = await users();
         let user = await userCollection.findOne({ 'emailAddress': emailAddress, isDeleted: 0 });
         return user;
-    }
-    catch (e) {
-        throw new Error(e.message)
+    } catch (e) {
+        throw new Error(e.message);
     }
 };
 
@@ -46,9 +41,8 @@ async function updatePassword(id, password) {
         let userCollection = await users();
         let user = await userCollection.updateOne({ _id: id }, { $set: { password: password } });
         return true;
-    }
-    catch (e) {
-        throw new Error(e.message)
+    } catch (e) {
+        throw new Error(e.message);
     }
 };
 
@@ -57,9 +51,8 @@ async function updateUserProfile(user_data, id) {
         let userCollection = await users();
         let user = await userCollection.updateOne({ _id: id }, { $set: user_data });
         return true;
-    }
-    catch (e) {
-        throw new Error(e.message)
+    } catch (e) {
+        throw new Error(e.message);
     }
 }
 

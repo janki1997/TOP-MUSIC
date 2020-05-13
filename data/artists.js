@@ -4,30 +4,28 @@
  */
 
 const mongoCollections = require('../config/mongoCollections');
-const ObjectId = require('mongodb').ObjectId
+const ObjectId = require('mongodb').ObjectId;
 const artists = mongoCollections.artists;
 
 let exportedMethods = {
-    async  GetAllArtists() {
+    async GetAllArtists() {
         try {
             let artistsCollection = await artists();
             let artistsList = await artistsCollection.find().toArray();
-            if (!artistsList.length) throw 'Artists is not in System';
+            if (!artistsList.length) throw 'There are no artists';
             return artistsList;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
-    async  GetArtistsById(id) {
+    async GetArtistsById(id) {
         try {
             let artistsCollection = await artists();
             let artistsList = await artistsCollection.findOne({ _id: id, isDeleted: 0 });
-            if (!artistsList) throw 'artists not found ';
+            if (!artistsList) throw 'Artist not found';
             return artistsList;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
     async incrementCountById(id) {
@@ -37,25 +35,23 @@ let exportedMethods = {
             // Can increment positively or negatively by any value
             return artistCollection
                 .updateOne({ _id: id }, { $inc: { count: 1 } });
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
-    async  AddArtists(artistData) {
+    async AddArtists(artistData) {
         try {
             let artistsCollection = await artists();
             let insertArtist = await artistsCollection.insertMany(artistData);
             return true;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
     async removeArtist(id) {
         try {
             if (id === undefined) return Promise.reject('No id provided');
-            let currentArtist = await this.getArtist(id);
+            let currentArtist = await this.GetArtistsById(id);
             const artistCollection = await artists();
 
             const deletedInfo = await artistCollection.removeOne({ _id: ObjectId(id) });
@@ -66,49 +62,47 @@ let exportedMethods = {
                 "data": {
                     "_id": currentArtist._id,
                     "artistName": currentArtist.artistName,
-                    "artistMembers": currentArtist.artistMembers,
-                    "yearFormed": currentArtist.yearFormed,
+                    "profileLogo": currentArtist.profileLogo,
+                    "createdDate": currentArtist.createdDate,
+                    "isDeleted": currentArtist.isDeleted,
                     "genres": currentArtist.genres,
-                    "recordLabel": currentArtist.recordLabel,
-                    "albums": currentArtist.albums
+                    "count": currentArtist.count
                 }
             };
             return output;
-        }
-        catch (e) {
-            throw new Error(e.message)
+        } catch (e) {
+            throw new Error(e.message);
         }
     },
-    async updateArtist(id, artistName, artistMembers, yearFormed, genres, recordLabel, albums) {
+    async updateArtist(id, artistName, profileLogo, createdDate, isDeleted, genres, count) {
         try {
             if (id === undefined) return Promise.reject('No id provided');
             if (artistName === undefined) return Promise.reject('No artist name provided');
-            if (artistMembers === undefined) return Promise.reject('No artist members provided');
-            if (yearFormed === undefined) return Promise.reject('No year formed provided');
+            if (profileLogo === undefined) return Promise.reject('No profile logo provided');
+            if (createdDate === undefined) return Promise.reject('No created date provided');
+            if (isDeleted === undefined) return Promise.reject('No deletion info provided');
             if (genres === undefined) return Promise.reject('No genres provided');
-            if (recordLabel === undefined) return Promise.reject('No record label provided');
+            if (count === undefined) return Promise.reject('No count provided');
 
             const artistCollection = await artists();
             // const userThatPosted = await users.getUserById(posterId);
 
             let updatedArtist = {
                 artistName: artistName,
-                artistMembers: artistMembers,
-                yearFormed: yearFormed,
+                profileLogo: profileLogo,
+                createdDate: createdDate,
+                isDeleted: isDeleted,
                 genres: genres,
-                recordLabel: recordLabel,
-                alubms: albums
+                count: count
             };
 
             const updateInfo = await artistCollection.updateOne({ _id: ObjectId(id) }, { $set: updatedArtist });
             if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Update failed';
             return this.GetArtistsById(id);
+        } catch (e) {
+            throw new Error(e.message);
         }
-        catch (e) {
-            throw new Error(e.message)
-        }
-    },
-
+    }
 };
 
 module.exports = exportedMethods;

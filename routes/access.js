@@ -11,12 +11,10 @@ router.get('/signUpPage', async (req, res) => {
         let artist_data = await data.artists.GetAllArtists();
         let genre_data = await data.genres.GetAllGenres();
         res.render("profile/signUpPage", { layout: "main", artist_data: artist_data, genre_data: genre_data });
-
     } catch (e) {
         res.status(401).redirect('/');
     }
 });
-
 
 //Registration Api
 router.post("/registration", async (req, res) => {
@@ -65,7 +63,7 @@ router.post("/registration", async (req, res) => {
             if (checkUser == null) {
                 let AddUser = await data.users.CreateUser(userData);
                 // res.json(AddUser)
-                res.render("profile/login", { layout: "main", "success" : "You have registered successfully. Please Login!" });
+                res.render("profile/login", { layout: "main", "success" : "You have successfully registered. Please login!" });
             } else {
                 res.status(401).render("profile/signUpPage", { layout: "main", artist_data: artist_data, genre_data: genre_data, error_message: "Email Address already exist." });
             }

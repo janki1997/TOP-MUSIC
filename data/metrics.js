@@ -18,7 +18,7 @@ let exportedMethods = {
             }
             return arr;
         } catch (e) {
-            throw new Error(e.message)
+            throw new Error(e.message);
         }
     },
     async topTenGenres() {
@@ -31,7 +31,7 @@ let exportedMethods = {
             }
             return arr;
         } catch (e) {
-            throw new Error(e.message)
+            throw new Error(e.message);
         }
     },
     async topTenArtistsInGenre() {
@@ -39,15 +39,13 @@ let exportedMethods = {
             const artistsCollection = await artists();
             const sortedA = await artistsCollection.find({}).sort({ count: -1, artistName: 1 }).toArray();
             const top10G = await this.topTenGenres();
-            let obj = {}
+            let obj = {};
             for (let g of top10G) {
                 obj[g] = "";
             }
             let count = 0;
             for (let x of sortedA) {
-
                 for (let y of x.genres) {
-
                     if (count == 10) {
                         return obj;
                     }
@@ -56,14 +54,11 @@ let exportedMethods = {
                         obj[gen.genreName] = x.artistName;
                         count++;
                     }
-
                 }
-
             }
-            console.log(obj)
             return obj;
         } catch (e) {
-            throw new Error(e.message)
+            throw new Error(e.message);
         }
     },
     async topTenArtistsbyGenre() {
@@ -71,7 +66,7 @@ let exportedMethods = {
             const artistsCollection = await artists();
             const sortedA = await artistsCollection.find({}).sort({ count: -1, artistName: 1 }).toArray();
             const top10G = await this.topTenGenres();
-            let obj = []
+            let obj = [];
             for (let g of top10G) {
                 obj.push({
                     genreName : g
@@ -79,9 +74,7 @@ let exportedMethods = {
             }
             let count = 0;
             for (let x of sortedA) {
-
                 for (let y of x.genres) {
-
                     if (count == 10) {
                         break;
                     }
@@ -89,28 +82,24 @@ let exportedMethods = {
                     if (gen != null) {
                         obj.forEach(ele=>{
                             if(ele.genreName ==gen.genreName){
-                                ele["artistName"] = x.artistName
-                                ele["profileLogo"] = x.profileLogo
+                                ele["artistName"] = x.artistName;
+                                ele["profileLogo"] = x.profileLogo;
                             }
                         })
                         count++;
                     }
-
                 }
-
             }
-            console.log(obj)
             obj = obj.filter(dt=>{
                 if(!dt.artistName){
                     return false;
                 }else{
-                    return true
+                    return true;
                 }
             });
-            console.log(obj)
             return obj;
         } catch (e) {
-            throw new Error(e.message)
+            throw new Error(e.message);
         }
     }
 }

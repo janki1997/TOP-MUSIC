@@ -19,7 +19,7 @@
                     {{inc @index}}.
                        <img src="/public/images/{{this.profileLogo}}"
                             class="rounded-circle mr-2 ml-2 d-block w-20 artist-images" alt="img"> {{this.artistName }}<br />
-                        Genres: {{this.genreName }}
+                        Genre: {{this.genreName }}
                     </li>
                     {{/each}}
                 </ul>
@@ -32,6 +32,7 @@
         </div>
         {{else}}
         <div class="col-6">
+            <h2>Music Forum</h2>
             <form id="sort" method="POST" action="/" name="sort">
                 <label for="dropdown">Sort By:</label>
                 <select id="dropdown" name="dropdown">
@@ -80,14 +81,16 @@
 
                         like(<span id="count-{{this._id}}">{{this.likeCount}}</span>)
                     </button>
-                    <p>Tags: {{this.genres}}, {{this.artist}}</p>
+                    <p>Genre Tag: {{this.genres}}<br>
+                    Artist Tag: {{this.artist}}</p>
 
                     {{else}}
                     <button type="button" class="btn btn-sm btn-light" disable>
                         <i class="fas fa-thumbs-up"></i>
                         like({{this.likeCount}})
                     </button>
-                    <p>Tags: {{this.genres}}, {{this.artist}}</p>
+                    <p>Genre Tag: {{this.genres}}<br>
+                    Artist Tag: {{this.artist}}</p>
                     {{/if}}
                 </div>
 
@@ -134,7 +137,7 @@
 
         <div class="col-3">
             <div class="card top-genres">
-                <h5 class="card-title text-center">Top Artist</h5>
+                <h5 class="card-title text-center">Top Artists</h5>
                 <ul class="list-group list-group-flush">
                     {{#each top_artist}}
                     <li class="list-group-item d-flex">
