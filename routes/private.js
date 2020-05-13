@@ -11,8 +11,9 @@ const moment = require('moment');
 const jwt = require('jsonwebtoken');
 
 //Profile Page
+
 router.get('/profile', async (req, res) => {
-    res.render('profile/homePage', {
+    res.render('profile/private', {
         layout: "main",
         title: "Top Music - Profile",
         auth: (req.session.auth) ? req.session.auth : "",

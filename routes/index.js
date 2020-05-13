@@ -8,7 +8,6 @@ const cookies = require("../cookies");
 const data = require("../data");
 const jwt = require('jsonwebtoken');
 const uuid = require("uuid/v4");
-const jwt = require('jsonwebtoken');
 
 const accessRoutes = require("./access");
 const privateRoutes = require("./private");
