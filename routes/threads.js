@@ -8,9 +8,9 @@ const jwt = require('jsonwebtoken');
 router.post("/createNewThread", async (req, res) => {
     try {
         if (!req.body.title) {
-            res.render("threads/myThread", { layout: "main", error_message: "Please provide forum title." })
+            res.render("threads/myThread", { layout: "main", error_message: "Please provide a forum title." });
         } else if (!req.body.user_id) {
-            res.render("threads/myThread", { layout: "main", error_message: "Please provide user information." })
+            res.render("threads/myThread", { layout: "main", error_message: "Please sign in first." });
         } else {
             let genreTag = req.body.genres_ids;
             let artistTag = req.body.artist_ids;
@@ -44,13 +44,13 @@ router.post("/createNewThread", async (req, res) => {
             getThreadData.forEach(async (element) => {
                 getLikeData.forEach(lelement => {
                     if (element._id == lelement.threadId && element.userId == req.body.user_id) {
-                        element["userlike"] = 1
+                        element["userlike"] = 1;
                     }
                 });
                 element["subThread"] = [];
                 getsubThreadData.forEach(selement => {
                     if (element._id == selement.threadId) {
-                        element["subThread"].push(selement)
+                        element["subThread"].push(selement);
                     }
                 });
             });
@@ -59,7 +59,7 @@ router.post("/createNewThread", async (req, res) => {
                 element["profileLogo"] = user_data.profileLogo;
             });
             
-            res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.body.user_id, artist_data: artist_data, genre_data: genre_data })
+            res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.body.user_id, artist_data: artist_data, genre_data: genre_data });
 
         }
     } catch (e) {
@@ -70,7 +70,7 @@ router.post("/createNewThread", async (req, res) => {
 router.get("/likeDislikeThread/:thread_id/:user_id", async (req, res) => {
     try {
         if (!req.params.user_id) {
-            res.render("threads/myThread", { layout: "main", error_message: "Please provide user information." })
+            res.render("threads/myThread", { layout: "main", error_message: "Please sign in first." });
         } else {
             let threadData = await data.threads.getThreadByLike(req.params.thread_id, req.params.user_id);
             if (threadData == null) {
@@ -80,9 +80,9 @@ router.get("/likeDislikeThread/:thread_id/:user_id", async (req, res) => {
                     _id: uuid.v4()
                 }
                 let addLike = await data.threads.addThreadLike(ThreadData);
-                res.json({ likeCount: 1, count: addLike })
+                res.json({ likeCount: 1, count: addLike });
             } else {
-                let removeLike = await data.threads.removeThreadLike(req.params.thread_id, req.params.user_id)
+                let removeLike = await data.threads.removeThreadLike(req.params.thread_id, req.params.user_id);
                 res.json({ likeCount: 0, count: removeLike });
             }
         }
@@ -94,9 +94,9 @@ router.get("/likeDislikeThread/:thread_id/:user_id", async (req, res) => {
 router.post("/UpdateThread", async (req, res) => {
     try {
         if (!req.body.title) {
-            res.render("threads/myThread", { layout: "main", error_message: "Please provide forum title." })
+            res.render("threads/myThread", { layout: "main", error_message: "Please provide a forum title." });
         } else if (!req.body.user_id) {
-            res.render("threads/myThread", { layout: "main", error_message: "Please provide user information." })
+            res.render("threads/myThread", { layout: "main", error_message: "Please sign in first." });
         } else {
             let genreTag = req.body.genres_ids;
             let artistTag = req.body.artist_ids;
@@ -128,13 +128,13 @@ router.post("/UpdateThread", async (req, res) => {
                 
                 getLikeData.forEach(lelement => {
                     if (element._id == lelement.threadId && element.userId == req.body.user_id) {
-                        element["userlike"] = 1
+                        element["userlike"] = 1;
                     }
                 });
                 element["subThread"] = [];
                 getsubThreadData.forEach(selement => {
                     if (element._id == selement.threadId) {
-                        element["subThread"].push(selement)
+                        element["subThread"].push(selement);
                     }
                 });
             });
@@ -142,7 +142,7 @@ router.post("/UpdateThread", async (req, res) => {
                 element["fullName"] = user_data.fullName;
                 element["profileLogo"] = user_data.profileLogo;
             });
-            res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.body.user_id, artist_data: artist_data, genre_data: genre_data })
+            res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.body.user_id, artist_data: artist_data, genre_data: genre_data });
         }
     } catch (e) {
         res.status(401).redirect('/');
@@ -162,13 +162,13 @@ router.get("/DeleteThread/:thread_id/:user_id", async (req, res) => {
         getThreadData.forEach(element => {
             getLikeData.forEach(lelement => {
                 if (element._id == lelement.threadId && element.userId == req.params.user_id) {
-                    element["userlike"] = 1
+                    element["userlike"] = 1;
                 }
             });
             element["subThread"] = [];
             getsubThreadData.forEach(selement => {
                 if (element._id == selement.threadId) {
-                    element["subThread"].push(selement)
+                    element["subThread"].push(selement);
                 }
             });
         })
@@ -176,7 +176,7 @@ router.get("/DeleteThread/:thread_id/:user_id", async (req, res) => {
             element["fullName"] = user_data.fullName;
             element["profileLogo"] = user_data.profileLogo;
         });
-        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.params.user_id, artist_data: artist_data, genre_data: genre_data })
+        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.params.user_id, artist_data: artist_data, genre_data: genre_data });
 
     } catch (e) {
         res.status(401).redirect('/');
@@ -194,13 +194,13 @@ router.get("/UserThread", async (req, res) => {
         getThreadData.forEach(async (element) => {
             getLikeData.forEach(lelement => {
                 if (element._id == lelement.threadId && element.userId == user_id) {
-                    element["userlike"] = 1
+                    element["userlike"] = 1;
                 }
             });
             element["subThread"] = [];
             getsubThreadData.forEach(selement => {
                 if (element._id == selement.threadId) {
-                    element["subThread"].push(selement)
+                    element["subThread"].push(selement);
                 }
             });
         })
@@ -275,13 +275,13 @@ router.post("/AddSubThread/:is_homepage", async (req, res) => {
                 getThreadData.forEach(element => {
                     getLikeData.forEach(lelement => {
                         if (element._id == lelement.threadId && element.userId == req.body.user_id) {
-                            element["userlike"] = 1
+                            element["userlike"] = 1;
                         }
                     });
                     element["subThread"] = [];
                     getsubThreadData.forEach(selement => {
                         if (element._id == selement.threadId) {
-                            element["subThread"].push(selement)
+                            element["subThread"].push(selement);
                         }
                     });
                 });
@@ -310,13 +310,13 @@ router.get("/DeleteSubThread/:sub_thread_id/:user_id", async (req, res) => {
         getThreadData.forEach(element => {
             getLikeData.forEach(lelement => {
                 if (element._id == lelement.threadId && element.userId == req.params.user_id) {
-                    element["userlike"] = 1
+                    element["userlike"] = 1;
                 }
             });
             element["subThread"] = [];
             getsubThreadData.forEach(selement => {
                 if (element._id == selement.threadId) {
-                    element["subThread"].push(selement)
+                    element["subThread"].push(selement);
                 }
             });
         });
@@ -324,7 +324,7 @@ router.get("/DeleteSubThread/:sub_thread_id/:user_id", async (req, res) => {
             element["fullName"] = user_data.fullName;
             element["profileLogo"] = user_data.profileLogo;
         })
-        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.params.user_id, artist_data: artist_data, genre_data: genre_data })
+        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.params.user_id, artist_data: artist_data, genre_data: genre_data });
 
     } catch (e) {
         res.status(401).redirect('/');

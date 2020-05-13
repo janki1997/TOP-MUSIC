@@ -19,7 +19,7 @@ router.get("/userProfile", async (req, res) => {
 
            user_data.genres.forEach(gelement=>{
              if(element._id == gelement){
-               element["selected"] = 1
+               element["selected"] = 1;
              }
            });
          }
@@ -30,7 +30,7 @@ router.get("/userProfile", async (req, res) => {
 
           user_data.artist.forEach(gelement=>{
             if(element._id == gelement){
-              element["selected"] = 1
+              element["selected"] = 1;
             }
           });
         }
@@ -84,7 +84,7 @@ router.post("/profileUpdate", async (req, res) => {
       genre_data.forEach(element=>{
         user_data.genres.forEach(gelement=>{
           if(element._id == gelement){
-            element["selected"] = 1
+            element["selected"] = 1;
           }
         });
       })
@@ -92,7 +92,7 @@ router.post("/profileUpdate", async (req, res) => {
       artist_data.forEach(element=>{
         user_data.artist.forEach(gelement=>{
           if(element._id == gelement){
-            element["selected"] = 1
+            element["selected"] = 1;
           }
         });
       })
