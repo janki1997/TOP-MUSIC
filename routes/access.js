@@ -46,11 +46,19 @@ router.post("/registration", async (req, res) => {
                 lastUpdatedDate: moment(new Date()).format("DD:MM:YYYY HH:mm:ss"),
                 profileLogo: req.body.profileLogo
             }
-            for (let i of userData.genres){
-                data.genres.incrementCountById(i);
+            if (Array.isArray(userData.genres)) {
+                for (let i of userData.genres){
+                    await data.genres.incrementCountById(i);
+                }
+            } else {
+                await data.genres.incrementCountById(userData.genres);
             }
-            for (let j of userData.artist){
-                data.artists.incrementCountById(j);
+            if (Array.isArray(userData.genres)) {
+                for (let j of userData.artist){
+                    await data.artists.incrementCountById(j);
+                }
+            } else {
+                await data.genres.incrementCountById(userData.artist);
             }
 
             let checkUser = await data.users.CheckUserExist(req.body.email_address);
