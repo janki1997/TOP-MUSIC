@@ -1,10 +1,12 @@
 function addRemovelike(thread_id,user_id){
+    console.log("inside")
     $.ajax({
-        url: "http://localhost:3000/thread/likeDislikeThread/" + thread_id ,
+        url: "http://localhost:3000/thread/likeDislikeThread/" + thread_id + "/" + user_id,
         type: "GET",
         dataType: "json",
         cache: false,
         success: function (response) {
+            console.log("dhsaabc",response)
            if(response.likeCount){
                $("#"+thread_id+"").removeClass("far");
             $("#"+thread_id+"").addClass("fas");
