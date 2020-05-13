@@ -35,5 +35,3 @@ $('#reset').click(() => {
     $('#error').hide();
     $('#myForm').trigger("reset");
 })
-
-

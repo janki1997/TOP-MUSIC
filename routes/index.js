@@ -3,11 +3,14 @@
  * ~
  */
 
-const accessRoutes = require("./access");
 const data = require("../data");
 const threads = require("./threads");
 const users = require("./users");
 const jwt = require('jsonwebtoken');
+const uuid = require("uuid/v4");
+
+const accessRoutes = require("./access");
+const threadRoutes = require("./threads");
 
 module.exports = app => {
   app.use("/access", accessRoutes);
@@ -33,8 +36,7 @@ module.exports = app => {
     if(user_id){
      getLikeData = await data.threads.getThreadLikeWise(thread_ids, user_id);
     }
-    
-    getThreadData.forEach(async (element) => {
+    getThreadData.forEach(element => {
       getLikeData.forEach(lelement => {
         if (user_id && element._id == lelement.threadId && element.userId == user_id) {
           element["userlike"] = 1;

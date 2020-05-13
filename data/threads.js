@@ -171,7 +171,6 @@ let exportedMethods = {
             let usersCollection = await users();
             let userData = await usersCollection.find({ _id: { $in: user_ids } }).toArray();
             subThreadList.forEach(element => {
-                element["createdDate"] = moment(element.createdDate, "MM-DD-YYYY");
                 userData.forEach(uelement => {
                     if (element.userId == uelement._id) {
                         element["fullName"] = uelement.fullName;

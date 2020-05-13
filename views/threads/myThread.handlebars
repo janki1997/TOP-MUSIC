@@ -46,7 +46,7 @@
                     <div>
                         <i class="fas fa-pencil-alt mr-1"
                             onclick="editThread('{{this.comment}}', '{{this.title}}', '{{this._id}}' )"></i>
-                        <a href="/thread/DeleteThread/{{this._id}}/{{../userID}}"> <i class="fas fa-trash mr-1"></i></a>
+                        <a href="/thread/DeleteThread/{{this._id}}"> <i class="fas fa-trash mr-1"></i></a>
                     </div>
                 </div>
 
@@ -77,8 +77,8 @@
 
                         like(<span id="count-{{this._id}}">{{this.likeCount}}</span>)
                     </button>
-                    <p>Genre Tag: {{this.genres}}<br>
-                    Artist Tag: {{this.artist}}</p>
+                    <p>Genre Tag: {{this.genres}} <br>
+                    Artist Tag: {{this.artist}} </p>
                 </div>
                 <div class="comments-list" style="display: none;" id="comment-{{this._id}}">
                     <div class="p-2">
@@ -102,7 +102,7 @@
                             </div>
                             <div>
                                 <small>{{this.createdDate}}</small>
-                                <a href= "/thread/DeleteSubThread/{{this._id}}/{{../../userID}}" ><i class="fas fa-trash mr-1"></i> </a>
+                                <a href= "/thread/DeleteSubThread/{{this._id}}" ><i class="fas fa-trash mr-1"></i> </a>
                             </div>
                         </div>
                         <div class="p-2">

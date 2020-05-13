@@ -2,6 +2,13 @@
     <div class="row">
         <div class="col-4 m-auto">
             <div id="error" class="error"></div>
+            <div class="alert alert-success alert-dismissible fade show" style="display: none;" id="success"
+                role="alert">
+                <strong>Success!</strong> Profile updated successfully
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -17,7 +24,7 @@
     {{/if}}
 
     <div class="registration">
-        <form method="post" action="/users/profileUpdate" id="updateForm">
+        <form method="post" id="updateForm">
             <div class="form-group">
                 <input type="hidden" value={{user_data._id}} name="user_id">
                 <input type="hidden" value={{user_data.emailAddress}} name="email_address">
@@ -71,9 +78,12 @@
                     {{/each}}
                 </select>
             </div>
-            <div>
+            <div class="form-group ">
                 <button class="btn btn-primary" type="submit" id="submit">Update</button>
             </div>
         </form>
+        <div class="form-group" id="deleteUser">
+            <span> <a class="anchor" onclick="deleteuser()" >Do you want to delete account ?</a></span>
+        </div>
     </div>
 </main>

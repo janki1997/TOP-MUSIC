@@ -81,16 +81,16 @@
 
                         like(<span id="count-{{this._id}}">{{this.likeCount}}</span>)
                     </button>
-                    <p>Genre Tag: {{this.genres}}<br>
-                    Artist Tag: {{this.artist}}</p>
+                    <p>Genre Tag: {{this.genres}} <br>
+                    Artist Tag: {{this.artist}} </p>
 
                     {{else}}
                     <button type="button" class="btn btn-sm btn-light" disable>
                         <i class="fas fa-thumbs-up"></i>
                         like({{this.likeCount}})
                     </button>
-                    <p>Genre Tag: {{this.genres}}<br>
-                    Artist Tag: {{this.artist}}</p>
+                    <p>Genre Tag: {{this.genres}} <br>
+                    Artist Tag: {{this.artist}} </p>
                     {{/if}}
                 </div>
 
@@ -119,7 +119,7 @@
                             <div>
                                 <small>{{this.createdDate}}</small>
                                 {{#if ../../auth}}
-                                <a href="/thread/DeleteSubThread/{{this._id}}/{{../../userID}}"><i
+                                <a href="/thread/DeleteSubThread/{{this._id}}"><i
                                         class="fas fa-trash mr-1"></i> </a>
                                 {{/if}}
                             </div>

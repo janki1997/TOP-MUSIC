@@ -6,6 +6,18 @@
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
 
+async  function GetAllUsers() {
+    try {
+        let usersCollection = await users();
+        let usersList = await usersCollection.find().toArray();
+        if (!usersList.length) throw 'There are no users in the system';
+        return usersList;
+    }
+    catch (error) {
+        throw new Error(error.message)
+    }
+};
+
 async function GetUserById(id) {
     try {
         const userCollection = await users();
@@ -54,12 +66,24 @@ async function updateUserProfile(user_data, id) {
     } catch (e) {
         throw new Error(e.message);
     }
-}
+};
 
+async function deleteUSer(user_id){
+    try {
+        let userCollection = await users();
+        let user = await userCollection.updateOne({ _id: user_id }, { $set: {isDeleted : 1} });
+        return true;
+    }
+    catch (e) {
+        throw new Error(e.message)
+    }
+}
 module.exports = {
     CreateUser,
+    GetAllUsers,
     GetUserById,
     CheckUserExist,
     updatePassword,
-    updateUserProfile
+    updateUserProfile,
+    deleteUSer
 }

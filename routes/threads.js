@@ -24,8 +24,8 @@ router.post("/createNewThread", async (req, res) => {
                 _id: uuid.v4(),
                 title: req.body.title,
                 comment: (req.body.comment) ? req.body.comment : "",
-                createdDate: moment(new Date()).format("DD/MM/YYYY HH:mm:ss"),
-                lastUpdatedDate: moment(new Date()).format("DD/MM/YYYY HH:mm:ss"),
+                createdDate: moment(new Date()).format("DD-MM-YYYY HH:mm:ss"),
+                lastUpdatedDate: moment(new Date()).format("DD-MM-YYYY HH:mm:ss"),
                 userId: req.body.user_id,
                 likeCount: 0,
                 commentCount: 0,
@@ -67,22 +67,23 @@ router.post("/createNewThread", async (req, res) => {
     }
 });
 
-router.get("/likeDislikeThread/:thread_id/:user_id", async (req, res) => {
+router.get("/likeDislikeThread/:thread_id", async (req, res) => {
     try {
-        if (!req.params.user_id) {
-            res.render("threads/myThread", { layout: "main", error_message: "Please sign in first." });
+        let user_id = await jwt.verify(req.session.auth, 'secret').userid;
+        if (!req.params.likeDislikeThread) {
+            res.render("threads/myThread", { layout: "main", error_message: "Please provide thread information." })
         } else {
-            let threadData = await data.threads.getThreadByLike(req.params.thread_id, req.params.user_id);
+            let threadData = await data.threads.getThreadByLike(req.params.thread_id,user_id);
             if (threadData == null) {
                 let ThreadData = {
                     threadId: req.params.thread_id,
-                    userId: req.params.user_id,
+                    userId: user_id,
                     _id: uuid.v4()
                 }
                 let addLike = await data.threads.addThreadLike(ThreadData);
                 res.json({ likeCount: 1, count: addLike });
             } else {
-                let removeLike = await data.threads.removeThreadLike(req.params.thread_id, req.params.user_id);
+                let removeLike = await data.threads.removeThreadLike(req.params.thread_id, user_id)
                 res.json({ likeCount: 0, count: removeLike });
             }
         }
@@ -110,7 +111,7 @@ router.post("/UpdateThread", async (req, res) => {
                 title: req.body.title,
                 comment: (req.body.comment) ? req.body.comment : "",
                 // media: (req.body.media) ? req.body.media : "",
-                lastUpdatedDate: moment(new Date()).format("DD/MM/YYYY HH:mm:ss"),
+                lastUpdatedDate: moment(new Date()).format("DD-MM-YYYY HH:mm:ss"),
                 genres: genreTag.genreName,
                 artist: artistTag.artistName
             }
@@ -149,19 +150,20 @@ router.post("/UpdateThread", async (req, res) => {
     }
 });
 
-router.get("/DeleteThread/:thread_id/:user_id", async (req, res) => {
+router.get("/DeleteThread/:thread_id", async (req, res) => {
     try {
+        let user_id = await jwt.verify(req.session.auth, 'secret').userid;
         let deleteThread = await data.threads.DeleteThread(req.params.thread_id);
-        let getThreadData = await data.threads.GetAllUserThreads(req.params.user_id);
-        let user_data = await data.users.GetUserById(req.params.user_id);
+        let getThreadData = await data.threads.GetAllUserThreads(user_id);
+        let user_data = await data.users.GetUserById(user_id);
         let thread_ids = getThreadData.map(x => x._id);
         let getsubThreadData = await data.threads.GetSubThread(thread_ids);
-        let getLikeData = await data.threads.getThreadLikeWise(thread_ids, req.params.user_id);
+        let getLikeData = await data.threads.getThreadLikeWise(thread_ids, user_id);
         let artist_data = await data.artists.GetAllArtists();
         let genre_data = await data.genres.GetAllGenres();
         getThreadData.forEach(element => {
             getLikeData.forEach(lelement => {
-                if (element._id == lelement.threadId && element.userId == req.params.user_id) {
+                if (element._id == lelement.threadId && element.userId == user_id) {
                     element["userlike"] = 1;
                 }
             });
@@ -176,7 +178,7 @@ router.get("/DeleteThread/:thread_id/:user_id", async (req, res) => {
             element["fullName"] = user_data.fullName;
             element["profileLogo"] = user_data.profileLogo;
         });
-        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.params.user_id, artist_data: artist_data, genre_data: genre_data });
+        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: user_id, artist_data: artist_data, genre_data: genre_data });
 
     } catch (e) {
         res.status(401).redirect('/');
@@ -227,8 +229,8 @@ router.post("/AddSubThread/:is_homepage", async (req, res) => {
                 _id: uuid.v4(),
                 threadId: req.body.thread_id,
                 userId: req.body.user_id,
-                createdDate: moment(new Date()).format("DD/MM/YYYY HH:mm:ss"),
-                lastUpdatedDate: moment(new Date()).format("DD/MM/YYYY HH:mm:ss"),
+                createdDate: moment(new Date()).format("DD-MM-YYYY HH:mm:ss"),
+                lastUpdatedDate: moment(new Date()).format("DD-MM-YYYY HH:mm:ss"),
                 comment: req.body.comment
             }
             let insertThread = await data.threads.CreateSubThread(sub_thread_data);
@@ -297,19 +299,20 @@ router.post("/AddSubThread/:is_homepage", async (req, res) => {
     }
 });
 
-router.get("/DeleteSubThread/:sub_thread_id/:user_id", async (req, res) => {
+router.get("/DeleteSubThread/:sub_thread_id", async (req, res) => {
     try {
+        let user_id = await jwt.verify(req.session.auth, 'secret').userid;
         let deleteThread = await data.threads.DeleteSubThread(req.params.sub_thread_id);
-        let getThreadData = await data.threads.GetAllUserThreads(req.params.user_id);
-        // let user_data = await data.users.GetUserById(req.params.user_id);
+        let getThreadData = await data.threads.GetAllUserThreads(user_id);
+        let user_data = await data.users.GetUserById(yuser_id);
         let thread_ids = getThreadData.map(x => x._id);
         let getsubThreadData = await data.threads.GetSubThread(thread_ids);
-        let getLikeData = await data.threads.getThreadLikeWise(thread_ids, req.params.user_id);
+        let getLikeData = await data.threads.getThreadLikeWise(thread_ids, user_id);
         let artist_data = await data.artists.GetAllArtists();
         let genre_data = await data.genres.GetAllGenres();
         getThreadData.forEach(element => {
             getLikeData.forEach(lelement => {
-                if (element._id == lelement.threadId && element.userId == req.params.user_id) {
+                if (element._id == lelement.threadId && element.userId == user_id) {
                     element["userlike"] = 1;
                 }
             });
@@ -324,7 +327,7 @@ router.get("/DeleteSubThread/:sub_thread_id/:user_id", async (req, res) => {
             element["fullName"] = user_data.fullName;
             element["profileLogo"] = user_data.profileLogo;
         })
-        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: req.params.user_id, artist_data: artist_data, genre_data: genre_data });
+        res.render("threads/myThread", { layout: "main", threadData: getThreadData, auth: req.session.auth, userID: user_id, artist_data: artist_data, genre_data: genre_data });
 
     } catch (e) {
         res.status(401).redirect('/');
