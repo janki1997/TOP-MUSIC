@@ -33,7 +33,7 @@ $('#updateForm').submit((event) => {
 });
 
 function deleteuser(){
-    let x = confirm("Are you sure you want to delete your balanalab?")
+    let x = confirm("Are you sure you want to delete your profile?");
     if(x){
         console.log("Hi");
         

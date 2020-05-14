@@ -77,7 +77,7 @@ router.post("/login", async (req, res) => {
     try {
         var userData = await data.users.CheckUserExist(req.body.email_address.toLowerCase());
         if (userData == null) {
-            res.status(401).render("profile/login", { layout: "main", error_message: "Incorrect email address/password." });
+            res.status(401).render("profile/login", { layout: "main", error: "No user found." });
         } else {
             let password = data.encryption.decrypt(userData.password);
             if (password == req.body.password) {
@@ -116,7 +116,7 @@ router.post("/login", async (req, res) => {
                         auth: req.session.auth,
                         threadData: getThreadData,
                         userID: userData._id,
-                        message: "Recently No Forum Post!",
+                        message: "No Forum Posts!",
                         top_artist : top_artist,
                         top_genres : top_genres,
                         top_artist_by_genres : top_artist_by_genres
@@ -165,7 +165,7 @@ router.get("/logout", async (req, res) => {
                 title: "Top Music",
                 threadData: getThreadData,
                 auth: "",
-                message: "Recently One Post any Forum. Please Login to post our forum first!",
+                message: "No Posts Yet. Login to be the first post!",
                 top_artist : top_artist,
                 top_genres : top_genres,
                 top_artist_by_genres : top_artist_by_genres
@@ -178,11 +178,11 @@ router.get("/logout", async (req, res) => {
 
 router.post("/forgetPassword", async (req, res) => {
     if (!req.body.email_address) {
-        res.status(401).render("profile/forgetPassword", { layout: "main", error: "Please provide email address" });
+        res.status(401).render("profile/forgetPassword", { layout: "main", error: "Please provide an email address." });
     } else {
         var userData = await data.users.CheckUserExist(req.body.email_address);
         if (userData == null) {
-            res.status(401).render("profile/forgetPassword", { layout: "main", error: "Email address is not valid" });
+            res.status(401).render("profile/forgetPassword", { layout: "main", error: "That email address is not valid." });
         } else {
             res.status(401).render("profile/forgetPassword", { layout: "main", email_data: req.body.email_address, user_id: userData._id });
         }
@@ -192,14 +192,14 @@ router.post("/forgetPassword", async (req, res) => {
 router.post("/changePassword", async (req, res) => {
     try {
         if (!req.body.new_password) {
-            res.status(401).render("profile/forgetPassword", { layout: "main", error: "Please provide new password.", email_data: req.body.email_address });
+            res.status(401).render("profile/forgetPassword", { layout: "main", error: "Please provide a new password.", email_data: req.body.email_address });
         } else {
             let password = data.encryption.encrypt(req.body.new_password);
             var userData = await data.users.updatePassword(req.body.user_id, password);
             if (userData == null) {
-                res.render("profile/forgetPassword", { layout: "main", error: "Email address is not valid" });
+                res.render("profile/forgetPassword", { layout: "main", error: "The email address is not valid." });
             } else {
-                res.render("profile/login", { layout: "main", message: "Password has been change successfully. Please Login!" });
+                res.render("profile/login", { layout: "main", message: "Password has been successfully changed. Please login!" });
             }
         }
     } catch (e) {

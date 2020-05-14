@@ -69,7 +69,7 @@ module.exports = app => {
         title: "Top Music",
         threadData: getThreadData,
         auth: (req.session.auth) ? req.session.auth : "",
-        message: "Recently One Post any Forum. Please Login to post our forum first!",
+        message: "No Posts Yet. Login to be the first post!",
         userID: user_id,
         top_artist : top_artist,
         top_genres : top_genres,
