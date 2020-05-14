@@ -77,7 +77,7 @@ router.post("/login", async (req, res) => {
     try {
         var userData = await data.users.CheckUserExist(req.body.email_address.toLowerCase());
         if (userData == null) {
-            res.status(401).render("profile/login", { layout: "main", error_message: "Incorrect email address/password." });
+            res.status(401).render("profile/login", { layout: "main", error: "No user found." });
         } else {
             let password = data.encryption.decrypt(userData.password);
             if (password == req.body.password) {
