@@ -116,7 +116,7 @@ router.post("/login", async (req, res) => {
                         auth: req.session.auth,
                         threadData: getThreadData,
                         userID: userData._id,
-                        message: "Recently No Forum Post!",
+                        message: "No Forum Posts!",
                         top_artist : top_artist,
                         top_genres : top_genres,
                         top_artist_by_genres : top_artist_by_genres
