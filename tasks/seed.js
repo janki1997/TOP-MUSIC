@@ -251,9 +251,9 @@ async function AddDataToDatabase() {
         let top10A = await data.metrics.topTenArtists();
         let top10G = await data.metrics.topTenGenres();
         let top10AiG = await data.metrics.topTenArtistsInGenre();
-        console.log(top10A);
-        console.log(top10G);
-        console.log(top10AiG);
+        // console.log(top10A);
+        // console.log(top10G);
+        // console.log(top10AiG);
         console.log("genre and artist data inserted successfully");
         await db.serverConfig.close();
 
