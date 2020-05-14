@@ -40,6 +40,11 @@ footer {
 .form-group label {
   font-weight: bolder;
 }
+
+.hidden {
+  display:none;
+}
+
 .navbar form input {
   display:none !important;
 }
